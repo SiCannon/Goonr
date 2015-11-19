@@ -5,15 +5,29 @@
 
 using namespace std;
 
+#define initialScale 5
+#define scaleIncrement 0.05
+#define orthoSize 10
+#define intialWindowWidth 800
+#define intialWindowHeight 600
+
 int mouse_x;
 int mouse_y;
 int mouseWheelDirection;
-GLfloat scale = 1;
 
-void printText(GLint x, GLint y, std::string s, GLubyte red, GLubyte green, GLubyte blue)
+GLfloat scale = initialScale;
+
+int rasterLeft = 0;
+int rasterBottom = 0;
+
+void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, GLubyte green, GLubyte blue)
 {
 	glColor3ub(red, green, blue);
-	glRasterPos2i(x, y);
+
+	if (setPosition)
+	{
+		glRasterPos2i(x, y);
+	}
 
 	for (size_t i = 0; i < s.size(); ++i)
 	{
@@ -21,9 +35,9 @@ void printText(GLint x, GLint y, std::string s, GLubyte red, GLubyte green, GLub
 	}
 }
 
-void printInt(GLint x, GLint y, int i, GLubyte red, GLubyte green, GLubyte blue)
+void printInt(bool setPosition, GLint x, GLint y, int i, GLubyte red, GLubyte green, GLubyte blue)
 {
-	printText(4, 0, std::to_string(i), red, green, blue);
+	printText(setPosition, 4, 0, std::to_string(i), red, green, blue);
 }
 
 void printInfo()
@@ -31,8 +45,6 @@ void printInfo()
 	//printInt(
 }
 
-/* Handler for window-repaint event. Call back when the window first appears and
-whenever the window needs to be re-painted. */
 void display() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -53,7 +65,7 @@ void display() {
 	glEnd();
 	glPopMatrix();
 
-	printText(0, 0, "pos: ", 128, 128, 0);
+	/*printText(0, 0, "pos: ", 128, 128, 0);
 	printText(4, 0, std::to_string(mouse_x), 128, 128, 0);
 	printText(8, 0, std::to_string(mouse_y), 128, 128, 0);
 	printText(4, 1, std::to_string(mouseWheelDirection), 128, 128, 0);
@@ -61,7 +73,22 @@ void display() {
 	for (int i = -5; i <= 5; i++)
 	{
 		printText(-5, i, std::to_string(i), 128, 128, 0);
-	}
+	}*/
+
+	/*for (int x = -10; x <= 10; x++)
+	{
+		for (int y = -10; y <= 10; y++)
+		{
+			printText(x, y, std::to_string(x), 128, 128, 0);
+		}
+	}*/
+
+	printText(true, rasterLeft, rasterBottom, std::to_string(mouse_x), 128, 128, 0);
+	printText(false, 0, 0, ", ", 128, 128, 0);
+	printText(false, 0, 0, std::to_string(mouse_y), 128, 128, 0);
+
+	printText(false, 0, 0, " - ", 128, 128, 0);
+	printText(false, 0, 0, std::to_string(scale), 128, 128, 0);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -75,7 +102,10 @@ void reshape(int w, int h)
 	glLoadIdentity();
 
 	double aspect_ratio = (double)w / (double)h;
-	glOrtho(-10 * aspect_ratio, 10 * aspect_ratio, -10, 10, -1, 1);
+	glOrtho(-orthoSize * aspect_ratio, orthoSize * aspect_ratio, -orthoSize, orthoSize, -1, 1);
+
+	rasterBottom = -orthoSize;
+	rasterLeft = -orthoSize * aspect_ratio;
 }
 
 void saveMousePosition(int x, int y)
@@ -95,14 +125,14 @@ void processMouse(int button, int state, int x, int y)
 		if (button == GLUT_WHEEL_UP)
 		{
 			mouseWheelDirection = 1;
-			scale += 0.1;
+			scale += scaleIncrement;
 		}
 		else if (button == GLUT_WHEEL_DOWN)
 		{
 			mouseWheelDirection = -1;
 			if (scale > 0)
 			{
-				scale -= 0.1;
+				scale -= scaleIncrement;
 			}
 		}
 	}
@@ -114,7 +144,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
 
 	glutInitWindowPosition(50, 50);
-	glutInitWindowSize(400, 300);
+	glutInitWindowSize(intialWindowWidth, intialWindowHeight);
 	glutCreateWindow("Text");
 
 	glutDisplayFunc(display);
