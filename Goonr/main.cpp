@@ -62,6 +62,17 @@ void display() {
 	glVertex2f(1, -1);
 	glVertex2f(1, 1);
 	glVertex2f(-1, 1);
+
+	GLfloat mx = 0.5;
+	GLfloat my = 0.5;
+	glColor3ub(32, 192, 0);
+	glBegin(GL_QUADS);
+	glVertex2f(mx, my);
+	glVertex2f(mx + 0.1, my - 0.2);
+	glVertex2f(mx + 0.1, my - 0.1);
+	glVertex2f(mx + 0.2, my - 0.1);
+
+
 	glEnd();
 	glPopMatrix();
 
