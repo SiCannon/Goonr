@@ -1,0 +1,26 @@
+map from screen coordinates to world coords
+from (mouse_x, mouse_y) to (mx, my)
+
+screen is
+
+	0,0 ------------------- 800,0
+	|                         |
+	|                         |
+	|                         |
+	|                         |
+	0,600 -----------------800,600
+	
+world is
+
+	mouse scale M = orthoSize/scale = 10/scale
+	N = M * aspect ratio = M * (800/600) = (10/scale) * (800/600)
+
+	-N,-M---------0,-M------------+N,-M
+	  |
+	  |
+	  |
+	-N,0-----------0,0-------------+N,0
+	  |
+	  |
+	  |
+	-N,M-----------0,M-------------+N,M
