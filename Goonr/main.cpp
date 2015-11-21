@@ -5,17 +5,20 @@
 
 using namespace std;
 
-#define initialScale 5
+#define initialScale 2
 #define scaleIncrement 0.05
-#define orthoSize 10
+#define orthoSize 10.0f
 #define intialWindowWidth 800
 #define intialWindowHeight 600
 
 int mouse_x;
 int mouse_y;
 int mouseWheelDirection;
+int windowWidth;
+int windowHeight;
 
 GLfloat scale = initialScale;
+
 
 int rasterLeft = 0;
 int rasterBottom = 0;
@@ -37,7 +40,7 @@ void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, G
 
 void printInt(bool setPosition, GLint x, GLint y, int i, GLubyte red, GLubyte green, GLubyte blue)
 {
-	printText(setPosition, 4, 0, std::to_string(i), red, green, blue);
+	printText(setPosition, x, y, std::to_string(i), red, green, blue);
 }
 
 void printInfo()
@@ -63,8 +66,13 @@ void display() {
 	glVertex2f(1, 1);
 	glVertex2f(-1, 1);
 
-	GLfloat mx = 0.5;
-	GLfloat my = 0.5;
+	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
+	GLfloat orthoHeight = orthoSize / scale;
+	GLfloat orthoWidth = orthoHeight * aspect_ratio;
+
+	GLfloat mx = 2.0f * orthoWidth * (GLfloat)mouse_x / (GLfloat)windowWidth - orthoWidth;
+	GLfloat my = orthoHeight - 2.0 * orthoHeight * (GLfloat)mouse_y / (GLfloat)windowHeight;
+
 	glColor3ub(32, 192, 0);
 	glBegin(GL_QUADS);
 	glVertex2f(mx, my);
@@ -75,6 +83,11 @@ void display() {
 
 	glEnd();
 	glPopMatrix();
+
+	GLfloat s = (2.0f * orthoSize) / scale;
+	printText(true, rasterLeft, 0, std::to_string(s), 192, 192, 192);
+
+
 
 	/*printText(0, 0, "pos: ", 128, 128, 0);
 	printText(4, 0, std::to_string(mouse_x), 128, 128, 0);
@@ -105,8 +118,16 @@ void display() {
 	glutPostRedisplay();
 }
 
+/*void reCalcMouseScaling()
+{
+	mouseScale = ((2.0f * orthoSize) / scale);
+}*/
+
 void reshape(int w, int h)
 {
+	windowWidth = w;
+	windowHeight = h;
+
 	glViewport(0, 0, w, h);
 
 	glMatrixMode(GL_PROJECTION);
@@ -137,6 +158,7 @@ void processMouse(int button, int state, int x, int y)
 		{
 			mouseWheelDirection = 1;
 			scale += scaleIncrement;
+			//reCalcMouseScaling();
 		}
 		else if (button == GLUT_WHEEL_DOWN)
 		{
@@ -144,6 +166,7 @@ void processMouse(int button, int state, int x, int y)
 			if (scale > 0)
 			{
 				scale -= scaleIncrement;
+				//reCalcMouseScaling();
 			}
 		}
 	}
