@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define initialScale 2
+#define initialScale 5
 #define scaleIncrement 0.05
 #define orthoSize 10.0f
 #define intialWindowWidth 800
@@ -48,7 +48,54 @@ void printInfo()
 	//printInt(
 }
 
+void convertPos(int x, int y, GLfloat scale, GLfloat *wx, GLfloat *wy)
+{
+	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
+	GLfloat orthoHeight = orthoSize / scale;
+	GLfloat orthoWidth = orthoHeight * aspect_ratio;
+
+	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth;
+	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight;
+}
+
+void drawCursor()
+{
+	GLfloat newScale = 1.0f;
+
+	glLoadIdentity();
+	glScalef(newScale, newScale, newScale);
+
+
+	/*GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
+	GLfloat orthoHeight = orthoSize / newScale;
+	GLfloat orthoWidth = orthoHeight * aspect_ratio;
+
+	GLfloat mx = 2.0f * orthoWidth * (GLfloat)mouse_x / (GLfloat)windowWidth - orthoWidth;
+	GLfloat my = orthoHeight - 2.0f * orthoHeight * (GLfloat)mouse_y / (GLfloat)windowHeight;*/
+
+	GLfloat mx, my;
+	convertPos(mouse_x, mouse_y, newScale, &mx, &my);
+
+	glColor3ub(32, 192, 0);
+	glBegin(GL_QUADS);
+	glVertex2f(mx, my);
+	glVertex2f(mx + 0.1, my - 0.2);
+	glVertex2f(mx + 0.1, my - 0.1);
+	glVertex2f(mx + 0.2, my - 0.1);
+	glEnd();
+}
+
+bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat top, GLfloat bottom)
+{
+	return px >= left && px <= right && py >= top && py <= bottom;
+}
+
 void display() {
+
+	GLfloat mx, my;
+	convertPos(mouse_x, mouse_y, scale, &mx, &my);
+	bool isInside = isPointInRect(mx, my, -1, 1, -1, 1);
+
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -56,7 +103,14 @@ void display() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glColor3ub(192, 64, 0);
+	if (isInside)
+	{
+		glColor3ub(255, 192, 0);
+	}
+	else
+	{
+		glColor3ub(192, 64, 0);
+	}
 	glPushMatrix();
 	
 	glScalef(scale, scale, scale);
@@ -65,23 +119,10 @@ void display() {
 	glVertex2f(1, -1);
 	glVertex2f(1, 1);
 	glVertex2f(-1, 1);
-
-	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
-	GLfloat orthoHeight = orthoSize / scale;
-	GLfloat orthoWidth = orthoHeight * aspect_ratio;
-
-	GLfloat mx = 2.0f * orthoWidth * (GLfloat)mouse_x / (GLfloat)windowWidth - orthoWidth;
-	GLfloat my = orthoHeight - 2.0 * orthoHeight * (GLfloat)mouse_y / (GLfloat)windowHeight;
-
-	glColor3ub(32, 192, 0);
-	glBegin(GL_QUADS);
-	glVertex2f(mx, my);
-	glVertex2f(mx + 0.1, my - 0.2);
-	glVertex2f(mx + 0.1, my - 0.1);
-	glVertex2f(mx + 0.2, my - 0.1);
-
-
 	glEnd();
+
+	drawCursor();
+
 	glPopMatrix();
 
 	GLfloat s = (2.0f * orthoSize) / scale;
