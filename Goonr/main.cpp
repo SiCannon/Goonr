@@ -213,6 +213,14 @@ void processMouse(int button, int state, int x, int y)
 	}
 }
 
+void getKeyboard(unsigned char key, int x, int y)
+{
+	if (key == 'a')
+	{
+		scale = 20.0f;
+	}
+}
+
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
@@ -226,6 +234,7 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutPassiveMotionFunc(saveMousePosition);
 	glutMouseFunc(processMouse);
+	glutKeyboardFunc(getKeyboard);
 	glutMainLoop();
 	return EXIT_SUCCESS;
 }
