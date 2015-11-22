@@ -6,10 +6,11 @@
 using namespace std;
 
 #define initialScale 5
-#define scaleIncrement 0.05
+#define scaleIncrement 0.05f
 #define orthoSize 10.0f
 #define intialWindowWidth 800
 #define intialWindowHeight 600
+#define translateIncrement 0.1f
 
 int mouse_x;
 int mouse_y;
@@ -17,8 +18,11 @@ int mouseWheelDirection;
 int windowWidth;
 int windowHeight;
 
-GLfloat scale = initialScale;
+unsigned char keyState[256];
 
+GLfloat scale = initialScale;
+GLfloat translate_x = 0;
+GLfloat translate_y = 0;
 
 int rasterLeft = 0;
 int rasterBottom = 0;
@@ -64,7 +68,6 @@ void drawCursor()
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
-
 
 	/*GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
 	GLfloat orthoHeight = orthoSize / newScale;
@@ -113,6 +116,7 @@ void display() {
 	}
 	glPushMatrix();
 	
+	glTranslatef(translate_x, translate_y, 0);
 	glScalef(scale, scale, scale);
 	glBegin(GL_QUADS);
 	glVertex2f(-1, -1);
@@ -217,7 +221,11 @@ void getKeyboard(unsigned char key, int x, int y)
 {
 	if (key == 'a')
 	{
-		scale = 20.0f;
+		translate_x -= translateIncrement;
+	}
+	else if (key == 'd')
+	{
+		translate_x += translateIncrement;
 	}
 }
 
