@@ -10,7 +10,7 @@ using namespace std;
 #define orthoSize 10.0f
 #define intialWindowWidth 800
 #define intialWindowHeight 600
-#define translateIncrement 0.1f
+#define translateIncrement 0.02f
 
 int mouse_x;
 int mouse_y;
@@ -18,7 +18,7 @@ int mouseWheelDirection;
 int windowWidth;
 int windowHeight;
 
-unsigned char keyState[256];
+bool keyState[256];
 
 GLfloat scale = initialScale;
 GLfloat translate_x = 0;
@@ -64,7 +64,7 @@ void convertPos(int x, int y, GLfloat scale, GLfloat *wx, GLfloat *wy)
 
 void drawCursor()
 {
-	GLfloat newScale = 1.0f;
+	GLfloat newScale = 5.0f;
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
@@ -93,7 +93,24 @@ bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat 
 	return px >= left && px <= right && py >= top && py <= bottom;
 }
 
-void display() {
+void display()
+{
+	if (keyState['a'])
+	{
+		translate_x -= translateIncrement;
+	}
+	if (keyState['d'])
+	{
+		translate_x += translateIncrement;
+	}
+	if (keyState['w'])
+	{
+		translate_y += translateIncrement;
+	}
+	if (keyState['s'])
+	{
+		translate_y -= translateIncrement;
+	}
 
 	GLfloat mx, my;
 	convertPos(mouse_x, mouse_y, scale, &mx, &my);
@@ -217,16 +234,14 @@ void processMouse(int button, int state, int x, int y)
 	}
 }
 
-void getKeyboard(unsigned char key, int x, int y)
+void getKeyboardDown(unsigned char key, int x, int y)
 {
-	if (key == 'a')
-	{
-		translate_x -= translateIncrement;
-	}
-	else if (key == 'd')
-	{
-		translate_x += translateIncrement;
-	}
+	keyState[key] = true;
+}
+
+void getKeyboardUp(unsigned char key, int x, int y)
+{
+	keyState[key] = false;
 }
 
 int main(int argc, char **argv)
@@ -242,7 +257,8 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutPassiveMotionFunc(saveMousePosition);
 	glutMouseFunc(processMouse);
-	glutKeyboardFunc(getKeyboard);
+	glutKeyboardFunc(getKeyboardDown);
+	glutKeyboardUpFunc(getKeyboardUp);
 	glutMainLoop();
 	return EXIT_SUCCESS;
 }
