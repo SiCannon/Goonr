@@ -59,13 +59,13 @@ void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, G
 	GLfloat orthoWidth = orthoHeight * aspect_ratio;
 
 	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth - trans_x;
-	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight;
+	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // should be  + trans_y !!!?!
 }
 
 void drawCursor()
 {
 	GLfloat newScale = 1.0f;
-	GLfloat cursorSize = 1.0f;  
+	GLfloat cursorSize = 0.2f;  
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
@@ -91,7 +91,7 @@ void drawCursor()
 
 bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat top, GLfloat bottom)
 {
-	return px >= left && px <= right && py >= top && py <= bottom;
+	return px >= left && px <= right && py >= bottom && py <= top;
 }
 
 void display()
@@ -115,7 +115,7 @@ void display()
 
 	GLfloat mx, my;
 	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
-	bool isInside = isPointInRect(mx, my, -1, 1, -1, 1);
+	bool isInside = isPointInRect(mx, my, -1, 1, 1, -1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -134,8 +134,8 @@ void display()
 	}
 	glPushMatrix();
 	
-	glTranslatef(translate_x, translate_y, 0);
 	glScalef(scale, scale, scale);
+	glTranslatef(translate_x, translate_y, 0);
 	glBegin(GL_QUADS);
 	glVertex2f(-1, -1);
 	glVertex2f(1, -1);
