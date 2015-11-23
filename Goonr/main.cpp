@@ -52,19 +52,20 @@ void printInfo()
 	//printInt(
 }
 
-void convertPos(int x, int y, GLfloat scale, GLfloat *wx, GLfloat *wy)
+void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
 {
 	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
 	GLfloat orthoHeight = orthoSize / scale;
 	GLfloat orthoWidth = orthoHeight * aspect_ratio;
 
-	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth;
+	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth - trans_x;
 	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight;
 }
 
 void drawCursor()
 {
-	GLfloat newScale = 5.0f;
+	GLfloat newScale = 1.0f;
+	GLfloat cursorSize = 1.0f;  
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
@@ -77,14 +78,14 @@ void drawCursor()
 	GLfloat my = orthoHeight - 2.0f * orthoHeight * (GLfloat)mouse_y / (GLfloat)windowHeight;*/
 
 	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, newScale, &mx, &my);
+	convertPos(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
 
 	glColor3ub(32, 192, 0);
 	glBegin(GL_QUADS);
 	glVertex2f(mx, my);
-	glVertex2f(mx + 0.1, my - 0.2);
-	glVertex2f(mx + 0.1, my - 0.1);
-	glVertex2f(mx + 0.2, my - 0.1);
+	glVertex2f(mx + cursorSize, my - cursorSize * 2.0f);
+	glVertex2f(mx + cursorSize, my - cursorSize);
+	glVertex2f(mx + cursorSize * 2.0f, my - cursorSize);
 	glEnd();
 }
 
@@ -113,7 +114,7 @@ void display()
 	}
 
 	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, scale, &mx, &my);
+	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
 	bool isInside = isPointInRect(mx, my, -1, 1, -1, 1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -175,6 +176,10 @@ void display()
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
 	printText(false, 0, 0, std::to_string(scale), 128, 128, 0);
+
+	printText(false, 0, 0, " - ", 128, 128, 0);
+	printText(false, 0, 0, std::to_string(translate_x), 128, 128, 0);
+
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -247,7 +252,8 @@ void getKeyboardUp(unsigned char key, int x, int y)
 int main(int argc, char **argv)
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE);
+	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
+	glEnable(GL_MULTISAMPLE);
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(intialWindowWidth, intialWindowHeight);
@@ -259,6 +265,8 @@ int main(int argc, char **argv)
 	glutMouseFunc(processMouse);
 	glutKeyboardFunc(getKeyboardDown);
 	glutKeyboardUpFunc(getKeyboardUp);
+	glutSetCursor(GLUT_CURSOR_NONE);
+
 	glutMainLoop();
 	return EXIT_SUCCESS;
 }
