@@ -3,9 +3,11 @@
 #include <iostream>
 #include <string>
 
+#include "board.h"
+
 using namespace std;
 
-#define initialScale 5
+#define initialScale 1
 #define scaleIncrement 0.05f
 #define orthoSize 10.0f
 #define intialWindowWidth 800
@@ -21,11 +23,13 @@ int windowHeight;
 bool keyState[256];
 
 GLfloat scale = initialScale;
-GLfloat translate_x = 0;
-GLfloat translate_y = 0;
+GLfloat translate_x = (-BOARD_WIDTH / 2.0f);
+GLfloat translate_y = (-BOARD_HEIGHT / 2.0f);
 
-int rasterLeft = 0;
-int rasterBottom = 0;
+GLfloat rasterLeft = 0;
+GLfloat rasterBottom = 0;
+
+Board* board;
 
 void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, GLubyte green, GLubyte blue)
 {
@@ -94,6 +98,36 @@ bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat 
 	return px >= left && px <= right && py >= bottom && py <= top;
 }
 
+void drawCell(int cx, int cy)
+{
+	int color = board->getcell(cx, cy);
+
+	switch (color)
+	{
+	case CELL_RED:
+		glColor3ub(255, 0, 0);
+		break;
+	case CELL_BLUE:
+		glColor3ub(0, 0, 255);
+		break;
+	case CELL_YELLOW:
+		glColor3ub(255, 255, 0);
+		break;
+	case CELL_GREEN:
+		glColor3ub(0, 255, 0);
+		break;
+	default:
+		glColor3ub(0, 255, 0);
+		break;
+	}
+
+	glVertex2f(cx, cy);
+	glVertex2f(cx + 1.0f, cy);
+	glVertex2f(cx + 1.0f, cy + 1.0f);
+	glVertex2f(cx, cy + 1.0f);
+
+}
+
 void display()
 {
 	if (keyState['a'])
@@ -124,23 +158,48 @@ void display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	if (isInside)
+	/*if (isInside)
 	{
 		glColor3ub(255, 192, 0);
 	}
 	else
 	{
 		glColor3ub(192, 64, 0);
-	}
+	}*/
 	glPushMatrix();
 	
 	glScalef(scale, scale, scale);
 	glTranslatef(translate_x, translate_y, 0);
 	glBegin(GL_QUADS);
-	glVertex2f(-1, -1);
+	/*glVertex2f(-1, -1);
 	glVertex2f(1, -1);
 	glVertex2f(1, 1);
-	glVertex2f(-1, 1);
+	glVertex2f(-1, 1);*/
+
+	for (int x = 0; x < BOARD_WIDTH; x++)
+	{
+		for (int y = 0; y < BOARD_HEIGHT; y++)
+		{
+			drawCell(x, y);
+		}
+	}
+	glEnd();
+
+	glBegin(GL_LINE_LOOP);
+
+	glColor3ub(255, 255, 255);
+	GLfloat hx1 = floor(mx);
+	GLfloat hy1 = floor(my);
+	GLfloat hx2 = hx1 + 1.0f - 0.1f;
+	GLfloat hy2 = hy1 + 1.0f - 0.1f;
+	hx1 += 0.1f;
+	hy1 += 0.1f;
+	glVertex2f(hx1, hy1);
+	glVertex2f(hx2, hy1);
+	glVertex2f(hx2, hy2);
+	glVertex2f(hx1, hy2);
+
+
 	glEnd();
 
 	drawCursor();
@@ -251,6 +310,9 @@ void getKeyboardUp(unsigned char key, int x, int y)
 
 int main(int argc, char **argv)
 {
+	board = new Board();
+	board->init(10, 10);
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE);
@@ -268,5 +330,8 @@ int main(int argc, char **argv)
 	glutSetCursor(GLUT_CURSOR_NONE);
 
 	glutMainLoop();
+
+	delete(board);
+
 	return EXIT_SUCCESS;
 }
