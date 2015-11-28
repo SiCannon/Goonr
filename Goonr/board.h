@@ -11,8 +11,14 @@
 #define CELL_YELLOW 2
 #define CELL_GREEN 3
 
-#define BOARD_WIDTH 30
-#define BOARD_HEIGHT 20
+#define BOARD_WIDTH 300
+#define BOARD_HEIGHT 200
+
+struct Cell
+{
+	int color;
+	int state;
+};
 
 class Board
 {
@@ -22,6 +28,7 @@ class Board
 public:
 	void init(int board_width, int board_height);
 	int getcell(int x, int y);
+	
 };
 
 #endif

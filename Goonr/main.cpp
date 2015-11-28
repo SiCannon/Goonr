@@ -3,16 +3,17 @@
 #include <iostream>
 #include <string>
 
+#include "CellColors.h"
 #include "board.h"
 
 using namespace std;
 
-#define initialScale 1
+#define initialScale 0.5
 #define scaleIncrement 0.05f
 #define orthoSize 10.0f
 #define intialWindowWidth 800
 #define intialWindowHeight 600
-#define translateIncrement 0.02f
+#define translateIncrement 0.1f
 
 int mouse_x;
 int mouse_y;
@@ -102,49 +103,33 @@ void drawCell(int cx, int cy)
 {
 	int color = board->getcell(cx, cy);
 
-	switch (color)
-	{
-	case CELL_RED:
-		glColor3ub(255, 0, 0);
-		break;
-	case CELL_BLUE:
-		glColor3ub(0, 0, 255);
-		break;
-	case CELL_YELLOW:
-		glColor3ub(255, 255, 0);
-		break;
-	case CELL_GREEN:
-		glColor3ub(0, 255, 0);
-		break;
-	default:
-		glColor3ub(0, 255, 0);
-		break;
-	}
+	GLubyte cols[] = { 0, 0, 0 };
+	getColorByCode(color, cols);
+	glColor3ubv(cols);
 
 	glVertex2f(cx, cy);
 	glVertex2f(cx + 1.0f, cy);
 	glVertex2f(cx + 1.0f, cy + 1.0f);
 	glVertex2f(cx, cy + 1.0f);
-
 }
 
 void display()
 {
 	if (keyState['a'])
 	{
-		translate_x -= translateIncrement;
+		translate_x += translateIncrement;
 	}
 	if (keyState['d'])
 	{
-		translate_x += translateIncrement;
+		translate_x -= translateIncrement;
 	}
 	if (keyState['w'])
 	{
-		translate_y += translateIncrement;
+		translate_y -= translateIncrement;
 	}
 	if (keyState['s'])
 	{
-		translate_y -= translateIncrement;
+		translate_y += translateIncrement;
 	}
 
 	GLfloat mx, my;
