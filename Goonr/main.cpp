@@ -1,12 +1,15 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-#include <iostream>
-#include <string>
+#include <stdio.h>
+//#include <iostream>
+//#include <string>
+#include <math.h>
 
+//#include "gnr_print_utils.h"
 #include "CellColors.h"
 #include "board.h"
 
-using namespace std;
+//using namespace std;
 
 #define initialScale 0.5
 #define scaleIncrement 0.05f
@@ -34,7 +37,7 @@ GLfloat rasterBottom = 0;
 
 Board* board;
 
-void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, GLubyte green, GLubyte blue)
+void printText(bool setPosition, GLint x, GLint y, char const *s, GLubyte red, GLubyte green, GLubyte blue)
 {
 	glColor3ub(red, green, blue);
 
@@ -43,7 +46,7 @@ void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, G
 		glRasterPos2i(x, y);
 	}
 
-	for (size_t i = 0; i < s.size(); ++i)
+	for (size_t i = 0; s[i] != '\0'; i++)
 	{
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s[i]);
 	}
@@ -51,7 +54,16 @@ void printText(bool setPosition, GLint x, GLint y, std::string s, GLubyte red, G
 
 void printInt(bool setPosition, GLint x, GLint y, int i, GLubyte red, GLubyte green, GLubyte blue)
 {
-	printText(setPosition, x, y, std::to_string(i), red, green, blue);
+	char buffer[20];
+	snprintf(buffer, 20, "%d", i);
+	printText(setPosition, x, y, buffer, red, green, blue);
+}
+
+void printFloat(bool setPosition, GLint x, GLint y, float f, GLubyte red, GLubyte green, GLubyte blue)
+{
+	char buffer[20];
+	snprintf(buffer, 20, "%f", f);
+	printText(setPosition, x, y, buffer, red, green, blue);
 }
 
 void printInfo()
@@ -202,7 +214,7 @@ void display()
 	glPopMatrix();
 
 	GLfloat s = (2.0f * orthoSize) / scale;
-	printText(true, rasterLeft, 0, std::to_string(s), 192, 192, 192);
+	printFloat(true, rasterLeft, 0, s, 192, 192, 192);
 
 
 
@@ -224,15 +236,15 @@ void display()
 		}
 	}*/
 
-	printText(true, rasterLeft, rasterBottom, std::to_string(mouse_x), 128, 128, 0);
+	printInt(true, rasterLeft, rasterBottom, mouse_x, 128, 128, 0);
 	printText(false, 0, 0, ", ", 128, 128, 0);
-	printText(false, 0, 0, std::to_string(mouse_y), 128, 128, 0);
+	printInt(false, 0, 0, mouse_y, 128, 128, 0);
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
-	printText(false, 0, 0, std::to_string(scale), 128, 128, 0);
+	printFloat(false, 0, 0, scale, 128, 128, 0);
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
-	printText(false, 0, 0, std::to_string(translate_x), 128, 128, 0);
+	printFloat(false, 0, 0, translate_x, 128, 128, 0);
 
 
 	glutSwapBuffers();
@@ -327,6 +339,7 @@ int main(int argc, char **argv)
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutPassiveMotionFunc(saveMousePosition);
+	glutMotionFunc(saveMousePosition);
 	glutMouseFunc(processMouse);
 	glutKeyboardFunc(getKeyboardDown);
 	glutKeyboardUpFunc(getKeyboardUp);
