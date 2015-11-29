@@ -1,5 +1,5 @@
 #pragma once
 
-#include <freeglut.h>
+#include <GL/freeglut.h>
 
 void getColorByCode(int colorCode, GLubyte *colors, int state);

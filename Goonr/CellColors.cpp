@@ -1,4 +1,4 @@
-#include <freeglut.h>
+#include <GL/freeglut.h>
 #include "CellColors.h"
 #include "board.h"
 
