@@ -17,6 +17,8 @@ using namespace std;
 
 int mouse_x;
 int mouse_y;
+GLfloat mouse_world_x;
+GLfloat mouse_world_y;
 int mouseWheelDirection;
 int windowWidth;
 int windowHeight;
@@ -64,7 +66,15 @@ void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, G
 	GLfloat orthoWidth = orthoHeight * aspect_ratio;
 
 	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth - trans_x;
-	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // should be  + trans_y !!!?!
+	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // shouldn't this be  + trans_y ??
+}
+
+void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
+{
+	GLfloat mx, my;
+	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
+	*bx = floor(mx);
+	*by = floor(my);
 }
 
 void drawCursor()
@@ -101,10 +111,10 @@ bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat 
 
 void drawCell(int cx, int cy)
 {
-	int color = board->getcell(cx, cy);
+	Cell *cell = board->getcell(cx, cy);
 
 	GLubyte cols[] = { 0, 0, 0 };
-	getColorByCode(color, cols);
+	getColorByCode(cell->color, cols, cell->state);
 	glColor3ubv(cols);
 
 	glVertex2f(cx, cy);
@@ -132,9 +142,7 @@ void display()
 		translate_y += translateIncrement;
 	}
 
-	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
-	bool isInside = isPointInRect(mx, my, -1, 1, 1, -1);
+	//bool isInside = isPointInRect(mx, my, -1, 1, 1, -1);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -170,20 +178,22 @@ void display()
 	}
 	glEnd();
 
+	GLfloat bx, by;
+	getBoardPos(mouse_x, mouse_y, scale, translate_x, translate_y, &bx, &by);
+
 	glBegin(GL_LINE_LOOP);
 
 	glColor3ub(255, 255, 255);
-	GLfloat hx1 = floor(mx);
-	GLfloat hy1 = floor(my);
-	GLfloat hx2 = hx1 + 1.0f - 0.1f;
-	GLfloat hy2 = hy1 + 1.0f - 0.1f;
-	hx1 += 0.1f;
-	hy1 += 0.1f;
+	//GLfloat hx1 = floor(mx);
+	//GLfloat hy1 = floor(my);
+	GLfloat hx1 = bx + 0.1f;
+	GLfloat hy1 = by + 0.1f;
+	GLfloat hx2 = bx + 1.0f - 0.1f;
+	GLfloat hy2 = by + 1.0f - 0.1f;
 	glVertex2f(hx1, hy1);
 	glVertex2f(hx2, hy1);
 	glVertex2f(hx2, hy2);
 	glVertex2f(hx1, hy2);
-
 
 	glEnd();
 
@@ -262,6 +272,14 @@ void saveMousePosition(int x, int y)
 
 void processMouse(int button, int state, int x, int y)
 {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		GLfloat bx, by;
+		getBoardPos(mouse_x, mouse_y, scale, translate_x, translate_y, &bx, &by);
+		Cell *cell = board->getcell(bx, by);
+		cell->state = (cell->state == 0) ? 1 : 0;
+	}
+
 	// Used for wheels, has to be up
 	if (state == GLUT_UP)
 	{

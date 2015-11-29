@@ -10,7 +10,7 @@ void Board::generateSquares()
 	{
 		for (int y = 0; y < BOARD_HEIGHT; y++)
 		{
-			cells[x][y] = rand() % CELL_TYPE_COUNT;
+			cells[x][y].color = rand() % CELL_TYPE_COUNT;
 		}
 	}
 }
@@ -22,7 +22,7 @@ void Board::init(int board_width, int board_height)
 	generateSquares();
 }
 
-int Board::getcell(int x, int y)
+Cell *Board::getcell(int x, int y)
 {
-	return cells[x][y];
+	return &cells[x][y];
 }

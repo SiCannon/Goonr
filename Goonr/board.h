@@ -23,11 +23,11 @@ struct Cell
 class Board
 {
 	int width, height;
-	int cells[BOARD_WIDTH][BOARD_HEIGHT];
+	Cell cells[BOARD_WIDTH][BOARD_HEIGHT];
 	void generateSquares();
 public:
 	void init(int board_width, int board_height);
-	int getcell(int x, int y);
+	Cell *getcell(int x, int y);
 	
 };
 
