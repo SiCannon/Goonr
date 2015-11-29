@@ -2,4 +2,4 @@
 
 #include <freeglut.h>
 
-void getColorByCode(int colorCode, GLubyte *colors);
+void getColorByCode(int colorCode, GLubyte *colors, int state);
