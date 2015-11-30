@@ -6,6 +6,7 @@
 #include <math.h>
 
 //#include "gnr_print_utils.h"
+#include "textutils.h"
 #include "CellColors.h"
 #include "board.h"
 
@@ -37,7 +38,7 @@ GLfloat rasterBottom = 0;
 
 Board* board;
 
-void printText(bool setPosition, GLint x, GLint y, char const *s, GLubyte red, GLubyte green, GLubyte blue)
+/*void printText(bool setPosition, GLint x, GLint y, char const *s, GLubyte red, GLubyte green, GLubyte blue)
 {
 	glColor3ub(red, green, blue);
 
@@ -64,12 +65,7 @@ void printFloat(bool setPosition, GLint x, GLint y, float f, GLubyte red, GLubyt
 	char buffer[20];
 	snprintf(buffer, 20, "%f", f);
 	printText(setPosition, x, y, buffer, red, green, blue);
-}
-
-void printInfo()
-{
-	//printInt(
-}
+}*/
 
 void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
 {
@@ -85,8 +81,8 @@ void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, 
 {
 	GLfloat mx, my;
 	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
-	*bx = floor(mx);
-	*by = floor(my);
+	*bx = floorf(mx);
+	*by = floorf(my);
 }
 
 void drawCursor()

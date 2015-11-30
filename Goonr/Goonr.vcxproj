@@ -134,10 +134,12 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClCompile Include="board.cpp" />
     <ClCompile Include="CellColors.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="textutils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
     <ClInclude Include="CellColors.h" />
+    <ClInclude Include="textutils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
