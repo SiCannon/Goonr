@@ -7,6 +7,8 @@
 #include "CellColors.h"
 #include "board.h"
 
+#include "transform.h"
+
 #define initialScale 0.5
 #define scaleIncrement 0.05f
 #define orthoSize 10.0f
@@ -32,6 +34,10 @@ GLfloat rasterLeft = 0;
 GLfloat rasterBottom = 0;
 
 Board* board;
+Transform* tf_world;
+Transform* tf_cursor;
+
+// this is a test comment
 
 void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
 {
@@ -244,13 +250,23 @@ int main(int argc, char **argv)
 	board = new Board();
 	board->init(10, 10);
 
+	tf_world = new Transform();
+	tf_world->scale = initialScale;
+	tf_world->translate_x = (-BOARD_WIDTH / 2.0f);
+	tf_world->translate_y = (-BOARD_HEIGHT / 2.0f);
+
+	tf_cursor = new Transform();
+	tf_cursor->scale = 1.0f;
+	tf_cursor->translate_x = 0;
+	tf_cursor->translate_y = 0;
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE);
 
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(intialWindowWidth, intialWindowHeight);
-	glutCreateWindow("Text");
+	glutCreateWindow("Goonr");
 
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
