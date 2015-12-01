@@ -1,16 +1,11 @@
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <stdio.h>
-//#include <iostream>
-//#include <string>
 #include <math.h>
 
-//#include "gnr_print_utils.h"
 #include "textutils.h"
 #include "CellColors.h"
 #include "board.h"
-
-//using namespace std;
 
 #define initialScale 0.5
 #define scaleIncrement 0.05f
@@ -38,35 +33,6 @@ GLfloat rasterBottom = 0;
 
 Board* board;
 
-/*void printText(bool setPosition, GLint x, GLint y, char const *s, GLubyte red, GLubyte green, GLubyte blue)
-{
-	glColor3ub(red, green, blue);
-
-	if (setPosition)
-	{
-		glRasterPos2i(x, y);
-	}
-
-	for (size_t i = 0; s[i] != '\0'; i++)
-	{
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, s[i]);
-	}
-}
-
-void printInt(bool setPosition, GLint x, GLint y, int i, GLubyte red, GLubyte green, GLubyte blue)
-{
-	char buffer[20];
-	snprintf(buffer, 20, "%d", i);
-	printText(setPosition, x, y, buffer, red, green, blue);
-}
-
-void printFloat(bool setPosition, GLint x, GLint y, float f, GLubyte red, GLubyte green, GLubyte blue)
-{
-	char buffer[20];
-	snprintf(buffer, 20, "%f", f);
-	printText(setPosition, x, y, buffer, red, green, blue);
-}*/
-
 void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
 {
 	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
@@ -92,13 +58,6 @@ void drawCursor()
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
-
-	/*GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
-	GLfloat orthoHeight = orthoSize / newScale;
-	GLfloat orthoWidth = orthoHeight * aspect_ratio;
-
-	GLfloat mx = 2.0f * orthoWidth * (GLfloat)mouse_x / (GLfloat)windowWidth - orthoWidth;
-	GLfloat my = orthoHeight - 2.0f * orthoHeight * (GLfloat)mouse_y / (GLfloat)windowHeight;*/
 
 	GLfloat mx, my;
 	convertPos(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
@@ -150,32 +109,17 @@ void display()
 		translate_y += translateIncrement;
 	}
 
-	//bool isInside = isPointInRect(mx, my, -1, 1, 1, -1);
-
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	/*if (isInside)
-	{
-		glColor3ub(255, 192, 0);
-	}
-	else
-	{
-		glColor3ub(192, 64, 0);
-	}*/
 	glPushMatrix();
 	
 	glScalef(scale, scale, scale);
 	glTranslatef(translate_x, translate_y, 0);
 	glBegin(GL_QUADS);
-	/*glVertex2f(-1, -1);
-	glVertex2f(1, -1);
-	glVertex2f(1, 1);
-	glVertex2f(-1, 1);*/
 
 	for (int x = 0; x < BOARD_WIDTH; x++)
 	{
@@ -192,8 +136,6 @@ void display()
 	glBegin(GL_LINE_LOOP);
 
 	glColor3ub(255, 255, 255);
-	//GLfloat hx1 = floor(mx);
-	//GLfloat hy1 = floor(my);
 	GLfloat hx1 = bx + 0.1f;
 	GLfloat hy1 = by + 0.1f;
 	GLfloat hx2 = bx + 1.0f - 0.1f;
@@ -212,26 +154,6 @@ void display()
 	GLfloat s = (2.0f * orthoSize) / scale;
 	printFloat(true, rasterLeft, 0, s, 192, 192, 192);
 
-
-
-	/*printText(0, 0, "pos: ", 128, 128, 0);
-	printText(4, 0, std::to_string(mouse_x), 128, 128, 0);
-	printText(8, 0, std::to_string(mouse_y), 128, 128, 0);
-	printText(4, 1, std::to_string(mouseWheelDirection), 128, 128, 0);
-
-	for (int i = -5; i <= 5; i++)
-	{
-		printText(-5, i, std::to_string(i), 128, 128, 0);
-	}*/
-
-	/*for (int x = -10; x <= 10; x++)
-	{
-		for (int y = -10; y <= 10; y++)
-		{
-			printText(x, y, std::to_string(x), 128, 128, 0);
-		}
-	}*/
-
 	printInt(true, rasterLeft, rasterBottom, mouse_x, 128, 128, 0);
 	printText(false, 0, 0, ", ", 128, 128, 0);
 	printInt(false, 0, 0, mouse_y, 128, 128, 0);
@@ -246,11 +168,6 @@ void display()
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
-
-/*void reCalcMouseScaling()
-{
-	mouseScale = ((2.0f * orthoSize) / scale);
-}*/
 
 void reshape(int w, int h)
 {
@@ -295,7 +212,6 @@ void processMouse(int button, int state, int x, int y)
 		{
 			mouseWheelDirection = 1;
 			scale += scaleIncrement;
-			//reCalcMouseScaling();
 		}
 		else if (button == GLUT_WHEEL_DOWN)
 		{
@@ -303,7 +219,6 @@ void processMouse(int button, int state, int x, int y)
 			if (scale > 0)
 			{
 				scale -= scaleIncrement;
-				//reCalcMouseScaling();
 			}
 		}
 	}
@@ -312,6 +227,11 @@ void processMouse(int button, int state, int x, int y)
 void getKeyboardDown(unsigned char key, int x, int y)
 {
 	keyState[key] = true;
+
+	if (key == 27)
+	{
+		glutLeaveMainLoop();
+	}
 }
 
 void getKeyboardUp(unsigned char key, int x, int y)
