@@ -9,7 +9,7 @@
 
 #include "transform.h"
 
-#define initialScale 0.5
+#define initialScale 1.0 // bigger is more zoomed in
 #define scaleIncrement 0.05f
 #define orthoSize 10.0f
 #define intialWindowWidth 800
@@ -25,6 +25,7 @@ int windowWidth;
 int windowHeight;
 
 bool keyState[256];
+GLfloat angle = 0.0f;
 
 GLfloat scale = initialScale;
 GLfloat translate_x = (-BOARD_WIDTH / 2.0f);
@@ -39,6 +40,7 @@ Transform* tf_cursor;
 
 // this is a test comment
 
+// screen to GLworld
 void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
 {
 	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
@@ -49,6 +51,7 @@ void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, G
 	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // shouldn't this be  + trans_y ??
 }
 
+// screen to 
 void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
 {
 	GLfloat mx, my;
@@ -68,12 +71,20 @@ void drawCursor()
 	GLfloat mx, my;
 	convertPos(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
 
+	glTranslatef(mx, my, 0);
+
 	glColor3ub(32, 192, 0);
 	glBegin(GL_QUADS);
-	glVertex2f(mx, my);
+
+	glVertex2f(0, 0);
+	glVertex2f(cursorSize, -cursorSize * 2.0f);
+	glVertex2f(cursorSize, -cursorSize);
+	glVertex2f(cursorSize * 2.0f, -cursorSize);
+
+	/*glVertex2f(mx, my);
 	glVertex2f(mx + cursorSize, my - cursorSize * 2.0f);
 	glVertex2f(mx + cursorSize, my - cursorSize);
-	glVertex2f(mx + cursorSize * 2.0f, my - cursorSize);
+	glVertex2f(mx + cursorSize * 2.0f, my - cursorSize);*/
 	glEnd();
 }
 
@@ -152,6 +163,22 @@ void display()
 	glVertex2f(hx1, hy2);
 
 	glEnd();
+
+	/* draw a rotating square * /
+	glPushMatrix();                     // Save model-view matrix setting
+	glLoadIdentity();
+	//glTranslatef(-0.5f, 0.4f, 0.0f);    // Translate
+	glScalef(2.0f, 2.0f, 2.0f);
+	glRotatef(angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
+	glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
+	glColor3ub(255, 255, 255);
+	glVertex2f(-0.3f, -0.3f);
+	glVertex2f(0.3f, -0.3f);
+	glVertex2f(0.3f, 0.3f);
+	glVertex2f(-0.3f, 0.3f);
+	glEnd();
+	glPopMatrix();
+	angle += 1.0f; //*/
 
 	drawCursor();
 
@@ -279,6 +306,8 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(tf_world);
+	delete(tf_cursor);
 	delete(board);
 
 	return EXIT_SUCCESS;

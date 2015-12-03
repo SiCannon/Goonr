@@ -27,6 +27,9 @@
     <ClCompile Include="textutils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h">
@@ -36,6 +39,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="textutils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
