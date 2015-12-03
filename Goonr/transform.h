@@ -8,4 +8,5 @@ public:
 	GLfloat scale;
 	GLfloat translate_x;
 	GLfloat translate_y;
+	GLfloat rotation;
 };
