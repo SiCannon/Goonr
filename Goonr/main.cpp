@@ -3,26 +3,19 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "defines.h"
 #include "textutils.h"
 #include "CellColors.h"
 #include "board.h"
 
 #include "transform.h"
-
-#define initialScale 1.0 // bigger is more zoomed in
-#define scaleIncrement 0.05f
-#define orthoSize 10.0f
-#define intialWindowWidth 800
-#define intialWindowHeight 600
-#define translateIncrement 0.1f
+#include "screenutil.h"
 
 int mouse_x;
 int mouse_y;
 GLfloat mouse_world_x;
 GLfloat mouse_world_y;
 int mouseWheelDirection;
-int windowWidth;
-int windowHeight;
 
 bool keyState[256];
 GLfloat angle = 0.0f;
@@ -31,31 +24,16 @@ GLfloat scale = initialScale;
 GLfloat translate_x = (-BOARD_WIDTH / 2.0f);
 GLfloat translate_y = (-BOARD_HEIGHT / 2.0f);
 
-GLfloat rasterLeft = 0;
-GLfloat rasterBottom = 0;
 
 Board* board;
 Transform* tf_world;
 Transform* tf_cursor;
 
-// this is a test comment
-
-// screen to GLworld
-void convertPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *wx, GLfloat *wy)
-{
-	GLfloat aspect_ratio = (GLfloat)windowWidth / (GLfloat)windowHeight;
-	GLfloat orthoHeight = orthoSize / scale;
-	GLfloat orthoWidth = orthoHeight * aspect_ratio;
-
-	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth - trans_x;
-	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // shouldn't this be  + trans_y ??
-}
-
-// screen to 
+// screen to board cell
 void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
 {
 	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
+	screenToWorld(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
 	*bx = floorf(mx);
 	*by = floorf(my);
 }
@@ -69,7 +47,7 @@ void drawCursor()
 	glScalef(newScale, newScale, newScale);
 
 	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
+	screenToWorld(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
 
 	glTranslatef(mx, my, 0);
 
@@ -81,10 +59,6 @@ void drawCursor()
 	glVertex2f(cursorSize, -cursorSize);
 	glVertex2f(cursorSize * 2.0f, -cursorSize);
 
-	/*glVertex2f(mx, my);
-	glVertex2f(mx + cursorSize, my - cursorSize * 2.0f);
-	glVertex2f(mx + cursorSize, my - cursorSize);
-	glVertex2f(mx + cursorSize * 2.0f, my - cursorSize);*/
 	glEnd();
 }
 
@@ -184,8 +158,8 @@ void display()
 
 	glPopMatrix();
 
-	GLfloat s = (2.0f * orthoSize) / scale;
-	printFloat(true, rasterLeft, 0, s, 192, 192, 192);
+	//GLfloat s = (2.0f * orthoSize) / scale;
+	//printFloat(true, rasterLeft, 0, s, 192, 192, 192);
 
 	printInt(true, rasterLeft, rasterBottom, mouse_x, 128, 128, 0);
 	printText(false, 0, 0, ", ", 128, 128, 0);
@@ -200,23 +174,6 @@ void display()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
-}
-
-void reshape(int w, int h)
-{
-	windowWidth = w;
-	windowHeight = h;
-
-	glViewport(0, 0, w, h);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-
-	double aspect_ratio = (double)w / (double)h;
-	glOrtho(-orthoSize * aspect_ratio, orthoSize * aspect_ratio, -orthoSize, orthoSize, -1, 1);
-
-	rasterBottom = -orthoSize;
-	rasterLeft = -orthoSize * aspect_ratio;
 }
 
 void saveMousePosition(int x, int y)

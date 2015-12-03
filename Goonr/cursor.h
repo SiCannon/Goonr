@@ -3,5 +3,5 @@
 class Cursor
 {
 public:
-	void draw();
+	void draw(int mouse_x, int mouse_y);
 };
