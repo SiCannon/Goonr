@@ -1,6 +1,4 @@
-#ifndef BOARD_H
-#define BOARD_H
-
+#pragma once
 
 #define RANDOM_SEED 165165165
 
@@ -31,4 +29,3 @@ public:
 	
 };
 
-#endif
