@@ -5,18 +5,15 @@
 
 Cursor::Cursor(GLfloat cursorSize)
 {
+	this->cursorSize = cursorSize;
 }
 
 void Cursor::draw(int mouse_x, int mouse_y)
 {
-	GLfloat newScale = 1.0f;
-	GLfloat cursorSize = 0.2f;
-
 	glLoadIdentity();
-	glScalef(newScale, newScale, newScale);
 
 	GLfloat mx, my;
-	screenToWorld(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
+	screenToWorld(mouse_x, mouse_y, 1.0f, 0, 0, &mx, &my);
 
 	glTranslatef(mx, my, 0);
 

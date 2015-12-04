@@ -5,3 +5,4 @@
 #define intialWindowWidth 800
 #define intialWindowHeight 600
 #define translateIncrement 0.1f
+#define CURSOR_SIZE 0.4f

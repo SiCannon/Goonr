@@ -10,6 +10,7 @@
 
 #include "transform.h"
 #include "screenutil.h"
+#include "cursor.h"
 
 int mouse_x;
 int mouse_y;
@@ -28,6 +29,7 @@ GLfloat translate_y = (-BOARD_HEIGHT / 2.0f);
 Board* board;
 Transform* tf_world;
 Transform* tf_cursor;
+Cursor *cursor;
 
 // screen to board cell
 void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
@@ -36,30 +38,6 @@ void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, 
 	screenToWorld(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
 	*bx = floorf(mx);
 	*by = floorf(my);
-}
-
-void drawCursor()
-{
-	GLfloat newScale = 1.0f;
-	GLfloat cursorSize = 0.2f;
-
-	glLoadIdentity();
-	glScalef(newScale, newScale, newScale);
-
-	GLfloat mx, my;
-	screenToWorld(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
-
-	glTranslatef(mx, my, 0);
-
-	glColor3ub(32, 192, 0);
-	glBegin(GL_QUADS);
-
-	glVertex2f(0, 0);
-	glVertex2f(cursorSize, -cursorSize * 2.0f);
-	glVertex2f(cursorSize, -cursorSize);
-	glVertex2f(cursorSize * 2.0f, -cursorSize);
-
-	glEnd();
 }
 
 bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat top, GLfloat bottom)
@@ -154,7 +132,8 @@ void display()
 	glPopMatrix();
 	angle += 1.0f; //*/
 
-	drawCursor();
+	//drawCursor();
+	cursor->draw(mouse_x, mouse_y);
 
 	glPopMatrix();
 
@@ -244,6 +223,8 @@ int main(int argc, char **argv)
 	tf_cursor->translate_x = 0;
 	tf_cursor->translate_y = 0;
 
+	cursor = new Cursor(CURSOR_SIZE);
+
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE);
@@ -263,6 +244,7 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(cursor);
 	delete(tf_world);
 	delete(tf_cursor);
 	delete(board);
