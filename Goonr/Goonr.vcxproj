@@ -136,13 +136,16 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClCompile Include="cursor.cpp" />
     <ClCompile Include="gun.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="screenutil.cpp" />
     <ClCompile Include="textutils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="board.h" />
     <ClInclude Include="CellColors.h" />
     <ClInclude Include="cursor.h" />
+    <ClInclude Include="defines.h" />
     <ClInclude Include="gun.h" />
+    <ClInclude Include="screenutil.h" />
     <ClInclude Include="textutils.h" />
     <ClInclude Include="transform.h" />
   </ItemGroup>

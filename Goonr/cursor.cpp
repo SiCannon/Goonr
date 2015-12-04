@@ -3,17 +3,20 @@
 #include "cursor.h"
 #include "screenutil.h"
 
+Cursor::Cursor(GLfloat cursorSize)
+{
+}
+
 void Cursor::draw(int mouse_x, int mouse_y)
 {
-	
-/*	GLfloat newScale = 1.0f;
-	GLfloat cursorSize = 0.2f;  
+	GLfloat newScale = 1.0f;
+	GLfloat cursorSize = 0.2f;
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
 
 	GLfloat mx, my;
-	convertPos(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
+	screenToWorld(mouse_x, mouse_y, newScale, 0, 0, &mx, &my);
 
 	glTranslatef(mx, my, 0);
 
@@ -25,5 +28,5 @@ void Cursor::draw(int mouse_x, int mouse_y)
 	glVertex2f(cursorSize, -cursorSize);
 	glVertex2f(cursorSize * 2.0f, -cursorSize);
 
-	glEnd();*/
+	glEnd();
 }

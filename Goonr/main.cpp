@@ -41,7 +41,7 @@ void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, 
 void drawCursor()
 {
 	GLfloat newScale = 1.0f;
-	GLfloat cursorSize = 0.2f;  
+	GLfloat cursorSize = 0.2f;
 
 	glLoadIdentity();
 	glScalef(newScale, newScale, newScale);
