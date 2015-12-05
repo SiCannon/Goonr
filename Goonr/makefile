@@ -7,6 +7,8 @@ all:
 		cursor.cpp \
 		screenutil.cpp \
 		mouse.cpp \
+		transform.cpp \
+		util.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr

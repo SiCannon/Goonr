@@ -12,18 +12,10 @@
 #include "screenutil.h"
 #include "cursor.h"
 #include "mouse.h"
-
-GLfloat mouse_world_x;
-GLfloat mouse_world_y;
-int mouseWheelDirection;
+#include "util.h"
 
 bool keyState[256];
 GLfloat angle = 0.0f;
-
-GLfloat scale = initialScale;
-GLfloat translate_x = (-BOARD_WIDTH / 2.0f);
-GLfloat translate_y = (-BOARD_HEIGHT / 2.0f);
-
 
 Board* board;
 Transform* tf_world;
@@ -31,51 +23,23 @@ Transform* tf_cursor;
 Cursor *cursor;
 Mouse *mouse;
 
-// screen to board cell
-/*void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
-{
-	GLfloat mx, my;
-	screenToWorld(mouse->x, mouse->y, scale, translate_x, translate_y, &mx, &my);
-	*bx = floorf(mx);
-	*by = floorf(my);
-}*/
-
-bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat top, GLfloat bottom)
-{
-	return px >= left && px <= right && py >= bottom && py <= top;
-}
-
-void drawCell(int cx, int cy)
-{
-	Cell *cell = board->getcell(cx, cy);
-
-	GLubyte cols[] = { 0, 0, 0 };
-	getColorByCode(cell->color, cols, cell->state);
-	glColor3ubv(cols);
-
-	glVertex2f(cx, cy);
-	glVertex2f(cx + 1.0f, cy);
-	glVertex2f(cx + 1.0f, cy + 1.0f);
-	glVertex2f(cx, cy + 1.0f);
-}
-
 void display()
 {
 	if (keyState['a'])
 	{
-		translate_x += translateIncrement;
+		tf_world->translate_x += translateIncrement;
 	}
 	if (keyState['d'])
 	{
-		translate_x -= translateIncrement;
+		tf_world->translate_x -= translateIncrement;
 	}
 	if (keyState['w'])
 	{
-		translate_y -= translateIncrement;
+		tf_world->translate_y -= translateIncrement;
 	}
 	if (keyState['s'])
 	{
-		translate_y += translateIncrement;
+		tf_world->translate_y += translateIncrement;
 	}
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -86,21 +50,12 @@ void display()
 
 	glPushMatrix();
 	
-	glScalef(scale, scale, scale);
-	glTranslatef(translate_x, translate_y, 0);
-	glBegin(GL_QUADS);
+	tf_world->apply();
 
-	for (int x = 0; x < BOARD_WIDTH; x++)
-	{
-		for (int y = 0; y < BOARD_HEIGHT; y++)
-		{
-			drawCell(x, y);
-		}
-	}
-	glEnd();
+	board->draw();
 
 	GLfloat bx, by;
-	getBoardPos(mouse, scale, translate_x, translate_y, &bx, &by);
+	getBoardPos(mouse, tf_world->scale, tf_world->translate_x, tf_world->translate_y, &bx, &by);
 
 	glBegin(GL_LINE_LOOP);
 
@@ -144,10 +99,10 @@ void display()
 	printInt(false, 0, 0, mouse->y, 128, 128, 0);
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
-	printFloat(false, 0, 0, scale, 128, 128, 0);
+	printFloat(false, 0, 0, tf_world->scale, 128, 128, 0);
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
-	printFloat(false, 0, 0, translate_x, 128, 128, 0);
+	printFloat(false, 0, 0, tf_world->translate_x, 128, 128, 0);
 
 
 	glutSwapBuffers();
@@ -167,21 +122,21 @@ void processMouse(int button, int state, int x, int y)
 void mouseLeftClick(Mouse *mouse)
 {
 	GLfloat bx, by;
-	getBoardPos(mouse, scale, translate_x, translate_y, &bx, &by);
+	getBoardPos(mouse, tf_world->scale, tf_world->translate_x, tf_world->translate_y, &bx, &by);
 	Cell *cell = board->getcell(bx, by);
 	cell->state = (cell->state == 0) ? 1 : 0;
 }
 
 void mouseWheelUp(Mouse *mouse)
 {
-	scale += scaleIncrement;
+	tf_world->scale += scaleIncrement;
 }
 
 void mouseWheelDown(Mouse *mouse)
 {
-	if (scale > 0)
+	if (tf_world->scale > 0)
 	{
-		scale -= scaleIncrement;
+		tf_world->scale -= scaleIncrement;
 	}
 }
 

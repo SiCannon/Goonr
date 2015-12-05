@@ -23,9 +23,10 @@ class Board
 	int width, height;
 	Cell cells[BOARD_WIDTH][BOARD_HEIGHT];
 	void generateSquares();
+	void drawCell(int cx, int cy);
 public:
 	void init(int board_width, int board_height);
 	Cell *getcell(int x, int y);
-	
+	void draw();//GLfloat scale, GLfloat translate_x, GLfloat translate_y);
 };
 
