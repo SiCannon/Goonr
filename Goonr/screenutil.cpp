@@ -1,6 +1,7 @@
 #include <GL/freeglut.h>
-//#include "defines.h"
+#include <math.h>
 #include "screenutil.h"
+#include "mouse.h"
 
 #define orthoSize 10.0f
 
@@ -35,3 +36,13 @@ void screenToWorld(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y
 	*wx = 2.0f * orthoWidth * (GLfloat)x / (GLfloat)windowWidth - orthoWidth - trans_x;
 	*wy = orthoHeight - 2.0f * orthoHeight * (GLfloat)y / (GLfloat)windowHeight - trans_y; // shouldn't this be  + trans_y ??
 }
+
+
+void getBoardPos(Mouse *mouse, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
+{
+	GLfloat mx, my;
+	screenToWorld(mouse->x, mouse->y, scale, trans_x, trans_y, &mx, &my);
+	*bx = floorf(mx);
+	*by = floorf(my);
+}
+

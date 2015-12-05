@@ -1,9 +1,12 @@
 #pragma once
 
+#include "mouse.h"
+
 class Cursor
 {
 	GLfloat cursorSize;
+	Mouse *mouse;
 public:
-	Cursor(GLfloat cursorSize);
-	void draw(int mouse_x, int mouse_y);
+	Cursor(GLfloat cursorSize, Mouse *mouse);
+	void draw();
 };

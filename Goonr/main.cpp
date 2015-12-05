@@ -11,9 +11,8 @@
 #include "transform.h"
 #include "screenutil.h"
 #include "cursor.h"
+#include "mouse.h"
 
-int mouse_x;
-int mouse_y;
 GLfloat mouse_world_x;
 GLfloat mouse_world_y;
 int mouseWheelDirection;
@@ -30,15 +29,16 @@ Board* board;
 Transform* tf_world;
 Transform* tf_cursor;
 Cursor *cursor;
+Mouse *mouse;
 
 // screen to board cell
-void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
+/*void getBoardPos(int x, int y, GLfloat scale, GLfloat trans_x, GLfloat trans_y, GLfloat *bx, GLfloat *by)
 {
 	GLfloat mx, my;
-	screenToWorld(mouse_x, mouse_y, scale, translate_x, translate_y, &mx, &my);
+	screenToWorld(mouse->x, mouse->y, scale, translate_x, translate_y, &mx, &my);
 	*bx = floorf(mx);
 	*by = floorf(my);
-}
+}*/
 
 bool isPointInRect(GLfloat px, GLfloat py, GLfloat left, GLfloat right, GLfloat top, GLfloat bottom)
 {
@@ -100,7 +100,7 @@ void display()
 	glEnd();
 
 	GLfloat bx, by;
-	getBoardPos(mouse_x, mouse_y, scale, translate_x, translate_y, &bx, &by);
+	getBoardPos(mouse, scale, translate_x, translate_y, &bx, &by);
 
 	glBegin(GL_LINE_LOOP);
 
@@ -132,17 +132,16 @@ void display()
 	glPopMatrix();
 	angle += 1.0f; //*/
 
-	//drawCursor();
-	cursor->draw(mouse_x, mouse_y);
+	cursor->draw();
 
 	glPopMatrix();
 
 	//GLfloat s = (2.0f * orthoSize) / scale;
 	//printFloat(true, rasterLeft, 0, s, 192, 192, 192);
 
-	printInt(true, rasterLeft, rasterBottom, mouse_x, 128, 128, 0);
+	printInt(true, rasterLeft, rasterBottom, mouse->x, 128, 128, 0);
 	printText(false, 0, 0, ", ", 128, 128, 0);
-	printInt(false, 0, 0, mouse_y, 128, 128, 0);
+	printInt(false, 0, 0, mouse->y, 128, 128, 0);
 
 	printText(false, 0, 0, " - ", 128, 128, 0);
 	printFloat(false, 0, 0, scale, 128, 128, 0);
@@ -157,39 +156,32 @@ void display()
 
 void saveMousePosition(int x, int y)
 {
-	mouse_x = x;
-	mouse_y = y;
+	mouse->set(x, y);
 }
-
-#define GLUT_WHEEL_UP 3
-#define GLUT_WHEEL_DOWN 4
 
 void processMouse(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		GLfloat bx, by;
-		getBoardPos(mouse_x, mouse_y, scale, translate_x, translate_y, &bx, &by);
-		Cell *cell = board->getcell(bx, by);
-		cell->state = (cell->state == 0) ? 1 : 0;
-	}
+	mouse->process(button, state, x, y);
+}
 
-	// Used for wheels, has to be up
-	if (state == GLUT_UP)
+void mouseLeftClick(Mouse *mouse)
+{
+	GLfloat bx, by;
+	getBoardPos(mouse, scale, translate_x, translate_y, &bx, &by);
+	Cell *cell = board->getcell(bx, by);
+	cell->state = (cell->state == 0) ? 1 : 0;
+}
+
+void mouseWheelUp(Mouse *mouse)
+{
+	scale += scaleIncrement;
+}
+
+void mouseWheelDown(Mouse *mouse)
+{
+	if (scale > 0)
 	{
-		if (button == GLUT_WHEEL_UP)
-		{
-			mouseWheelDirection = 1;
-			scale += scaleIncrement;
-		}
-		else if (button == GLUT_WHEEL_DOWN)
-		{
-			mouseWheelDirection = -1;
-			if (scale > 0)
-			{
-				scale -= scaleIncrement;
-			}
-		}
+		scale -= scaleIncrement;
 	}
 }
 
@@ -223,7 +215,13 @@ int main(int argc, char **argv)
 	tf_cursor->translate_x = 0;
 	tf_cursor->translate_y = 0;
 
-	cursor = new Cursor(CURSOR_SIZE);
+
+	mouse = new Mouse();
+	mouse->onMouseLeftClick = &mouseLeftClick;
+	mouse->onMouseWheelUp = &mouseWheelUp;
+	mouse->onMouseWheelDown = &mouseWheelDown;
+
+	cursor = new Cursor(CURSOR_SIZE, mouse);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
@@ -244,6 +242,7 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(mouse);
 	delete(cursor);
 	delete(tf_world);
 	delete(tf_cursor);

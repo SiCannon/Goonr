@@ -2,18 +2,20 @@
 #include <GL/freeglut.h>
 #include "cursor.h"
 #include "screenutil.h"
+#include "mouse.h"
 
-Cursor::Cursor(GLfloat cursorSize)
+Cursor::Cursor(GLfloat cursorSize, Mouse *mouse)
 {
 	this->cursorSize = cursorSize;
+	this->mouse = mouse;
 }
 
-void Cursor::draw(int mouse_x, int mouse_y)
+void Cursor::draw()
 {
 	glLoadIdentity();
 
 	GLfloat mx, my;
-	screenToWorld(mouse_x, mouse_y, 1.0f, 0, 0, &mx, &my);
+	screenToWorld(mouse->x, mouse->y, 1.0f, 0, 0, &mx, &my);
 
 	glTranslatef(mx, my, 0);
 
