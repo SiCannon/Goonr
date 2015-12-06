@@ -15,6 +15,7 @@
 #include "util.h"
 #include "highlight.h"
 #include "debug.h"
+#include "gun.h"
 
 bool keyState[256];
 GLfloat angle = 0.0f;
@@ -24,6 +25,7 @@ Transform* tf_world;
 Cursor *cursor;
 Mouse *mouse;
 Highlight *highlight;
+Gun *gun;
 
 void display()
 {
@@ -55,8 +57,8 @@ void display()
 	tf_world->apply();
 
 	board->draw();
-
 	highlight->draw(mouse, tf_world);
+	gun->draw();
 
 	/* draw a rotating square * /
 	glPushMatrix();                     // Save model-view matrix setting
@@ -146,8 +148,9 @@ int main(int argc, char **argv)
 	mouse->onMouseWheelDown = &mouseWheelDown;
 
 	cursor = new Cursor(CURSOR_SIZE, mouse);
-
 	highlight = new Highlight();
+	gun = new Gun();
+	gun->setCell(5, 5);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);

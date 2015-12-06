@@ -10,6 +10,8 @@ all:
 		transform.cpp \
 		util.cpp \
 		highlight.cpp \
+		debug.cpp \
+		gun.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr

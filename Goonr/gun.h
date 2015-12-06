@@ -9,6 +9,7 @@ class Gun
 public:
 	Gun();
 	~Gun();
+	void setCell(int x, int y);
 	void init();
 	void draw();
 };
