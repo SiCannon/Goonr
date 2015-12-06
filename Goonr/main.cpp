@@ -14,13 +14,13 @@
 #include "mouse.h"
 #include "util.h"
 #include "highlight.h"
+#include "debug.cpp"
 
 bool keyState[256];
 GLfloat angle = 0.0f;
 
 Board* board;
 Transform* tf_world;
-Transform* tf_cursor;
 Cursor *cursor;
 Mouse *mouse;
 Highlight *highlight;
@@ -71,26 +71,14 @@ void display()
 	glVertex2f(0.3f, 0.3f);
 	glVertex2f(-0.3f, 0.3f);
 	glEnd();
-	glPopMatrix();
-	angle += 1.0f; //*/
+	glPopMatrix();*/
+	angle += 1.0f;
 
 	cursor->draw();
 
 	glPopMatrix();
 
-	//GLfloat s = (2.0f * orthoSize) / scale;
-	//printFloat(true, rasterLeft, 0, s, 192, 192, 192);
-
-	printInt(true, rasterLeft, rasterBottom, mouse->x, 128, 128, 0);
-	printText(false, 0, 0, ", ", 128, 128, 0);
-	printInt(false, 0, 0, mouse->y, 128, 128, 0);
-
-	printText(false, 0, 0, " - ", 128, 128, 0);
-	printFloat(false, 0, 0, tf_world->scale, 128, 128, 0);
-
-	printText(false, 0, 0, " - ", 128, 128, 0);
-	printFloat(false, 0, 0, tf_world->translate_x, 128, 128, 0);
-
+	print_debug_info(mouse, tf_world);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -152,12 +140,6 @@ int main(int argc, char **argv)
 	tf_world->translate_x = (-BOARD_WIDTH / 2.0f);
 	tf_world->translate_y = (-BOARD_HEIGHT / 2.0f);
 
-	tf_cursor = new Transform();
-	tf_cursor->scale = 1.0f;
-	tf_cursor->translate_x = 0;
-	tf_cursor->translate_y = 0;
-
-
 	mouse = new Mouse();
 	mouse->onMouseLeftClick = &mouseLeftClick;
 	mouse->onMouseWheelUp = &mouseWheelUp;
@@ -186,10 +168,10 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(highlight);
 	delete(mouse);
 	delete(cursor);
 	delete(tf_world);
-	delete(tf_cursor);
 	delete(board);
 
 	return EXIT_SUCCESS;

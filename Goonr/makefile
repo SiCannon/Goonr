@@ -9,6 +9,7 @@ all:
 		mouse.cpp \
 		transform.cpp \
 		util.cpp \
+		highlight.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr
