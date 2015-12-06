@@ -2,6 +2,7 @@
 
 #include <GL/freeglut.h>
 #include "mouse.h"
+#include "textutils.h"
 
 extern GLfloat rasterLeft;
 extern GLfloat rasterBottom;

@@ -1,6 +1,6 @@
 #include "keyboard.h"
 
-
+/*
 void getKeyboardDown(unsigned char key, int x, int y)
 {
 	keyState[key] = true;
@@ -15,4 +15,4 @@ void getKeyboardUp(unsigned char key, int x, int y)
 {
 	keyState[key] = false;
 }
-
+*/

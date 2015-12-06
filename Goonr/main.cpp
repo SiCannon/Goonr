@@ -14,7 +14,7 @@
 #include "mouse.h"
 #include "util.h"
 #include "highlight.h"
-#include "debug.cpp"
+#include "debug.h"
 
 bool keyState[256];
 GLfloat angle = 0.0f;
