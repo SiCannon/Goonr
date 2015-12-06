@@ -13,6 +13,7 @@
 #include "cursor.h"
 #include "mouse.h"
 #include "util.h"
+#include "highlight.h"
 
 bool keyState[256];
 GLfloat angle = 0.0f;
@@ -22,6 +23,7 @@ Transform* tf_world;
 Transform* tf_cursor;
 Cursor *cursor;
 Mouse *mouse;
+Highlight *highlight;
 
 void display()
 {
@@ -54,22 +56,7 @@ void display()
 
 	board->draw();
 
-	GLfloat bx, by;
-	getBoardPos(mouse, tf_world->scale, tf_world->translate_x, tf_world->translate_y, &bx, &by);
-
-	glBegin(GL_LINE_LOOP);
-
-	glColor3ub(255, 255, 255);
-	GLfloat hx1 = bx + 0.1f;
-	GLfloat hy1 = by + 0.1f;
-	GLfloat hx2 = bx + 1.0f - 0.1f;
-	GLfloat hy2 = by + 1.0f - 0.1f;
-	glVertex2f(hx1, hy1);
-	glVertex2f(hx2, hy1);
-	glVertex2f(hx2, hy2);
-	glVertex2f(hx1, hy2);
-
-	glEnd();
+	highlight->draw(mouse, tf_world);
 
 	/* draw a rotating square * /
 	glPushMatrix();                     // Save model-view matrix setting
@@ -177,6 +164,8 @@ int main(int argc, char **argv)
 	mouse->onMouseWheelDown = &mouseWheelDown;
 
 	cursor = new Cursor(CURSOR_SIZE, mouse);
+
+	highlight = new Highlight();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
