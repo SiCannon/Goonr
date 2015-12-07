@@ -59,6 +59,7 @@ void display()
 	glVertex2f(-0.3f, 0.3f);
 	glEnd();
 	glPopMatrix();*/
+
 	angle += 1.0f;
 
 	cursor->draw();
@@ -120,7 +121,7 @@ int main(int argc, char **argv)
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
 	gun = new Gun();
-	gun->setCell(5, 5);
+	gun->setCell(150, 100);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);

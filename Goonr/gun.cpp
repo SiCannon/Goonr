@@ -16,8 +16,8 @@ void Gun::init()
 
 void Gun::draw()
 {
-	/*glPushMatrix();
-	transform->apply();
+	//glPushMatrix();
+	//transform->apply();
 	glBegin(GL_TRIANGLES);
 
 	GLfloat gunSize = 0.6f;
@@ -31,12 +31,13 @@ void Gun::draw()
 
 
 	glEnd();
-	glPopMatrix();
-*/
-	glPushMatrix();                     // Save model-view matrix setting
+	//glPopMatrix();
+
+	//glPushMatrix();                     // Save model-view matrix setting
 	//glLoadIdentity();
 	//glTranslatef(-0.5f, 0.4f, 0.0f);    // Translate
 	//glScalef(2.0f, 2.0f, 2.0f);
+	/*
 	glRotatef(30.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
 	glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
 	glColor3ub(255, 255, 255);
@@ -45,7 +46,8 @@ void Gun::draw()
 	glVertex2f(0.3f, 0.3f);
 	glVertex2f(-0.3f, 0.3f);
 	glEnd();
-	glPopMatrix();
+	*/
+	//glPopMatrix();
 }
 
 

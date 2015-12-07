@@ -4,5 +4,5 @@
 #define scaleIncrement 0.05f
 #define intialWindowWidth 800
 #define intialWindowHeight 600
-#define translateIncrement 0.1f
+#define translateIncrement 0.4f
 #define CURSOR_SIZE 0.4f
