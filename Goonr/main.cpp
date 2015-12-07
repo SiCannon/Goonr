@@ -16,8 +16,8 @@
 #include "highlight.h"
 #include "debug.h"
 #include "gun.h"
+#include "keyboard.h"
 
-bool keyState[256];
 GLfloat angle = 0.0f;
 
 Board* board;
@@ -29,22 +29,7 @@ Gun *gun;
 
 void display()
 {
-	if (keyState['a'])
-	{
-		tf_world->translate_x += translateIncrement;
-	}
-	if (keyState['d'])
-	{
-		tf_world->translate_x -= translateIncrement;
-	}
-	if (keyState['w'])
-	{
-		tf_world->translate_y -= translateIncrement;
-	}
-	if (keyState['s'])
-	{
-		tf_world->translate_y += translateIncrement;
-	}
+	handleInput(tf_world);
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -115,21 +100,6 @@ void mouseWheelDown(Mouse *mouse)
 	{
 		tf_world->scale -= scaleIncrement;
 	}
-}
-
-void getKeyboardDown(unsigned char key, int x, int y)
-{
-	keyState[key] = true;
-
-	if (key == 27)
-	{
-		glutLeaveMainLoop();
-	}
-}
-
-void getKeyboardUp(unsigned char key, int x, int y)
-{
-	keyState[key] = false;
 }
 
 int main(int argc, char **argv)

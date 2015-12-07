@@ -1,9 +1,10 @@
 #pragma once
 
-//void getKeyboardDown(unsigned char key, int x, int y);
-//void getKeyboardUp(unsigned char key, int x, int y);
+#include "transform.h"
 
-class Keyboard
-{
+extern bool keyState[256];
 
-};
+void getKeyboardDown(unsigned char key, int x, int y);
+void getKeyboardUp(unsigned char key, int x, int y);
+void handleInput(Transform *worldTransform);
+
