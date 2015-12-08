@@ -17,6 +17,7 @@
 #include "debug.h"
 #include "gun.h"
 #include "keyboard.h"
+#include "testbuilding.h"
 
 GLfloat angle = 0.0f;
 
@@ -26,6 +27,7 @@ Cursor *cursor;
 Mouse *mouse;
 Highlight *highlight;
 Gun *gun;
+TestBuilding *tesbil;
 
 void display()
 {
@@ -44,8 +46,10 @@ void display()
 	board->draw();
 	highlight->draw(mouse, tf_world);
 	gun->draw();
+	//tesbil->draw();
 
 	/* draw a rotating square * /
+	angle += 1.0f;
 	glPushMatrix();                     // Save model-view matrix setting
 	glLoadIdentity();
 	//glTranslatef(-0.5f, 0.4f, 0.0f);    // Translate
@@ -60,7 +64,6 @@ void display()
 	glEnd();
 	glPopMatrix();*/
 
-	angle += 1.0f;
 
 	cursor->draw();
 
@@ -122,6 +125,7 @@ int main(int argc, char **argv)
 	highlight = new Highlight();
 	gun = new Gun();
 	gun->setCell(150, 100);
+	tesbil = new TestBuilding();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
@@ -142,6 +146,7 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(tesbil);
 	delete(highlight);
 	delete(mouse);
 	delete(cursor);

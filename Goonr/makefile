@@ -12,6 +12,8 @@ all:
 		highlight.cpp \
 		debug.cpp \
 		gun.cpp \
+		keyboard.cpp \
+		testbuilding.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr
