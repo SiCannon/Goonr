@@ -25,7 +25,8 @@ Transform* tf_world;
 Cursor *cursor;
 Mouse *mouse;
 Highlight *highlight;
-Gun *gun;
+Gun *gun1;
+Gun *gun2;
 
 void display()
 {
@@ -43,7 +44,8 @@ void display()
 
 	board->draw();
 	highlight->draw(mouse, tf_world);
-	gun->draw();
+	gun1->draw();
+	gun2->draw();
 
 	/* draw a rotating square * /
 	glPushMatrix();                     // Save model-view matrix setting
@@ -120,8 +122,10 @@ int main(int argc, char **argv)
 
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
-	gun = new Gun();
-	gun->setCell(150, 100);
+	gun1 = new Gun();
+	gun1->setCell(150, 100);
+	gun2 = new Gun();
+	gun2->setCell(155, 100);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
