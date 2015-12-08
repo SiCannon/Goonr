@@ -3,6 +3,7 @@
 Gun::Gun()
 {
 	transform = new Transform();
+	transform->scale = 1.0f;
 }
 
 Gun::~Gun()
@@ -16,8 +17,8 @@ void Gun::init()
 
 void Gun::draw()
 {
-	//glPushMatrix();
-	//transform->apply();
+	glPushMatrix();
+	transform->apply();
 	glBegin(GL_TRIANGLES);
 
 	GLfloat gunSize = 0.6f;
@@ -31,7 +32,7 @@ void Gun::draw()
 
 
 	glEnd();
-	//glPopMatrix();
+	glPopMatrix();
 
 	//glPushMatrix();                     // Save model-view matrix setting
 	//glLoadIdentity();
