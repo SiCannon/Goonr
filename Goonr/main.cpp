@@ -26,13 +26,9 @@ Transform* tf_world;
 Cursor *cursor;
 Mouse *mouse;
 Highlight *highlight;
-<<<<<<< HEAD
-Gun *gun;
-TestBuilding *tesbil;
-=======
 Gun *gun1;
 Gun *gun2;
->>>>>>> da5fb9e5f2943c4786635501b9b59c0095fed796
+TestBuilding *tesbil;
 
 void display()
 {
@@ -50,13 +46,9 @@ void display()
 
 	board->draw();
 	highlight->draw(mouse, tf_world);
-<<<<<<< HEAD
-	gun->draw();
-	//tesbil->draw();
-=======
 	gun1->draw();
 	gun2->draw();
->>>>>>> da5fb9e5f2943c4786635501b9b59c0095fed796
+	//tesbil->draw();
 
 	/* draw a rotating square * /
 	angle += 1.0f;
@@ -133,16 +125,11 @@ int main(int argc, char **argv)
 
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
-<<<<<<< HEAD
-	gun = new Gun();
-	gun->setCell(150, 100);
-	tesbil = new TestBuilding();
-=======
 	gun1 = new Gun();
 	gun1->setCell(150, 100);
 	gun2 = new Gun();
 	gun2->setCell(155, 100);
->>>>>>> da5fb9e5f2943c4786635501b9b59c0095fed796
+	tesbil = new TestBuilding();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
