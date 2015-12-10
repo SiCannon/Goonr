@@ -1,11 +1,11 @@
 #include "testbuilding.h"
 
-TestBuilding::TestBuilding()
+TestBuilding::TestBuilding(GLfloat x, GLfloat y, GLfloat scale)
 {
 	transform = new Transform();
-	transform->translate_x = 150.0f;
-	transform->translate_y = 100.0f;
-	transform->scale = 1.0f;
+	transform->translate_x = x;
+	transform->translate_y = y;
+	transform->scale = scale;
 }
 
 
@@ -19,7 +19,7 @@ void TestBuilding::draw()
 	transform->rotation+=0.2f;
 
 	glPushMatrix();
-	transform->apply();
+	transform->applyTRS();
 
 	glColor3ub(255, 255, 255);
 
@@ -28,6 +28,7 @@ void TestBuilding::draw()
 	glVertex2f(0.3f, -0.3f);
 	glVertex2f(0.3f, 0.3f);
 	glVertex2f(-0.3f, 0.3f);
+	glEnd();
 
 	glPopMatrix();
 }

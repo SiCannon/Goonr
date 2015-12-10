@@ -233,3 +233,4 @@ $RECYCLE.BIN/
 # VIM files?
 *.swp
 *.vim
+tags

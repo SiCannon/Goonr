@@ -9,5 +9,6 @@ public:
 	GLfloat translate_x;
 	GLfloat translate_y;
 	GLfloat rotation;
-	void apply();
+	void applyTRS();
+	void applyST();
 };

@@ -1,7 +1,12 @@
 #pragma once
 
+#include "transform.h"
+
 class World
 {
 public:
-//	void draw();
+	Transform* transform; 
+	World();
+	~World();
+	void draw();
 }

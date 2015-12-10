@@ -4,6 +4,7 @@ Gun::Gun()
 {
 	transform = new Transform();
 	transform->scale = 1.0f;
+	transform->rotation = 45.0f;
 }
 
 Gun::~Gun()
@@ -18,20 +19,19 @@ void Gun::init()
 void Gun::draw()
 {
 	glPushMatrix();
-	transform->apply();
-	glBegin(GL_TRIANGLES);
+	transform->applyTRS();
 
 	GLfloat gunSize = 0.6f;
 
 	GLubyte cols[] = { 255, 255, 255 };
 	glColor3ubv(cols);
 
+	glBegin(GL_TRIANGLES);
 	glVertex2f(0, gunSize / 2.0f);
 	glVertex2f(-gunSize / 4.0f, -gunSize / 2.0f);
 	glVertex2f(gunSize / 4.0f, -gunSize / 2.0f);
-
-
 	glEnd();
+
 	glPopMatrix();
 
 	//glPushMatrix();                     // Save model-view matrix setting

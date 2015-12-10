@@ -7,7 +7,7 @@ class TestBuilding
 {
 	Transform *transform;
 public:
-	TestBuilding();
+	TestBuilding(GLfloat x, GLfloat y, GLfloat scale);
 	~TestBuilding();
 	void draw();
 };

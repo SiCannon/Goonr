@@ -42,31 +42,13 @@ void display()
 
 	glPushMatrix();
 	
-	tf_world->apply();
+	tf_world->applyST();
 
 	board->draw();
 	highlight->draw(mouse, tf_world);
 	gun1->draw();
 	gun2->draw();
-	//tesbil->draw();
-
-	/* draw a rotating square * /
-	angle += 1.0f;
-	glPushMatrix();                     // Save model-view matrix setting
-	glLoadIdentity();
-	//glTranslatef(-0.5f, 0.4f, 0.0f);    // Translate
-	glScalef(2.0f, 2.0f, 2.0f);
-	glRotatef(angle, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
-	glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
-	glColor3ub(255, 255, 255);
-	glVertex2f(-0.3f, -0.3f);
-	glVertex2f(0.3f, -0.3f);
-	glVertex2f(0.3f, 0.3f);
-	glVertex2f(-0.3f, 0.3f);
-	glEnd();
-	glPopMatrix();*/
-
-
+	tesbil->draw();
 	cursor->draw();
 
 	glPopMatrix();
@@ -115,8 +97,8 @@ int main(int argc, char **argv)
 
 	tf_world = new Transform();
 	tf_world->scale = initialScale;
-	tf_world->translate_x = (-BOARD_WIDTH / 2.0f);
-	tf_world->translate_y = (-BOARD_HEIGHT / 2.0f);
+	tf_world->translate_x = 0; //(-BOARD_WIDTH / 2.0f);
+	tf_world->translate_y = 0; //(-BOARD_HEIGHT / 2.0f);
 
 	mouse = new Mouse();
 	mouse->onMouseLeftClick = &mouseLeftClick;
@@ -126,10 +108,10 @@ int main(int argc, char **argv)
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
 	gun1 = new Gun();
-	gun1->setCell(150, 100);
+	gun1->setCell(3, 1);
 	gun2 = new Gun();
-	gun2->setCell(155, 100);
-	tesbil = new TestBuilding();
+	gun2->setCell(10, 10);
+	tesbil = new TestBuilding(1.0f, 2.0f, 2.0f);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
