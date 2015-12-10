@@ -141,6 +141,7 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="screenutil.cpp" />
+    <ClCompile Include="testbuilding.cpp" />
     <ClCompile Include="textutils.cpp" />
     <ClCompile Include="transform.cpp" />
     <ClCompile Include="util.cpp" />
@@ -156,6 +157,7 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="screenutil.h" />
+    <ClInclude Include="testbuilding.h" />
     <ClInclude Include="textutils.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="util.h" />
