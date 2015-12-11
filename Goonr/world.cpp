@@ -12,5 +12,5 @@ void World::~World()
 
 void draw()
 {
-
+	transform->applySF();
 }

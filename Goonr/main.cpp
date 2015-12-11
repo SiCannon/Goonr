@@ -30,9 +30,13 @@ Gun *gun1;
 Gun *gun2;
 TestBuilding *tesbil;
 
+long lastTicks;
+void updateGameState();
+
 void display()
 {
 	handleInput(tf_world);
+	updateGameState();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -57,6 +61,13 @@ void display()
 
 	glutSwapBuffers();
 	glutPostRedisplay();
+}
+
+void updateGameState()
+{
+	int newTicks = glutGet(GLUT_ELAPSED_TIME);
+	int elapsedTicks = newTicks - lastTicks;
+	lastTicks = newTicks;
 }
 
 void saveMousePosition(int x, int y)
