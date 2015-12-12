@@ -1,34 +1,22 @@
 #include "testbuilding.h"
 
-TestBuilding::TestBuilding(GLfloat x, GLfloat y, GLfloat scale)
+TestBuilding::TestBuilding(GLfloat x, GLfloat y, GLfloat scale) : BaseActor()
 {
-	transform = new Transform();
 	transform->translate_x = x;
 	transform->translate_y = y;
 	transform->scale = scale;
 }
 
-
-TestBuilding::~TestBuilding()
-{
-	delete(transform);
-}
-
-void TestBuilding::draw()
+void TestBuilding::draw_me()
 {
 	transform->rotation+=0.2f;
 
-	glPushMatrix();
-	transform->applyTRS();
-
 	glColor3ub(255, 255, 255);
 
-	glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
+	glBegin(GL_QUADS);
 	glVertex2f(-0.3f, -0.3f);
 	glVertex2f(0.3f, -0.3f);
 	glVertex2f(0.3f, 0.3f);
 	glVertex2f(-0.3f, 0.3f);
 	glEnd();
-
-	glPopMatrix();
 }

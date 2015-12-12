@@ -87,7 +87,7 @@ void mouseWheelUp(Mouse *mouse)
 
 void mouseWheelDown(Mouse *mouse)
 {
-	if (tf_world->scale > 0)
+	if (tf_world->scale > 0.1f)
 	{
 		tf_world->scale -= scaleIncrement;
 	}

@@ -1,26 +1,13 @@
 #include "gun.h"
 
-Gun::Gun()
+Gun::Gun() : BaseActor()
 {
-	transform = new Transform();
 	transform->scale = 1.0f;
 	transform->rotation = 45.0f;
 }
 
-Gun::~Gun()
+void Gun::draw_me()
 {
-	delete(transform);
-}
-
-void Gun::init()
-{
-}
-
-void Gun::draw()
-{
-	glPushMatrix();
-	transform->applyTRS();
-
 	GLfloat gunSize = 0.6f;
 
 	GLubyte cols[] = { 255, 255, 255 };
@@ -31,24 +18,6 @@ void Gun::draw()
 	glVertex2f(-gunSize / 4.0f, -gunSize / 2.0f);
 	glVertex2f(gunSize / 4.0f, -gunSize / 2.0f);
 	glEnd();
-
-	glPopMatrix();
-
-	//glPushMatrix();                     // Save model-view matrix setting
-	//glLoadIdentity();
-	//glTranslatef(-0.5f, 0.4f, 0.0f);    // Translate
-	//glScalef(2.0f, 2.0f, 2.0f);
-	/*
-	glRotatef(30.0f, 0.0f, 0.0f, 1.0f); // rotate by angle in degrees
-	glBegin(GL_QUADS);                  // Each set of 4 vertices form a quad
-	glColor3ub(255, 255, 255);
-	glVertex2f(-0.3f, -0.3f);
-	glVertex2f(0.3f, -0.3f);
-	glVertex2f(0.3f, 0.3f);
-	glVertex2f(-0.3f, 0.3f);
-	glEnd();
-	*/
-	//glPopMatrix();
 }
 
 

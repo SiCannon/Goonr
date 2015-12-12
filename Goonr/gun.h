@@ -2,14 +2,13 @@
 
 #include <GL/freeglut.h>
 #include "transform.h"
+#include "base_actor.h"
 
-class Gun
+class Gun : public BaseActor
 {
-	Transform *transform;
 public:
 	Gun();
-	~Gun();
 	void setCell(int x, int y);
-	void init();
-	void draw();
+protected:
+	void draw_me();
 };

@@ -2,12 +2,12 @@
 
 #include <GL/freeglut.h>
 #include "transform.h"
+#include "base_actor.h"
 
-class TestBuilding
+class TestBuilding : public BaseActor
 {
-	Transform *transform;
 public:
 	TestBuilding(GLfloat x, GLfloat y, GLfloat scale);
-	~TestBuilding();
-	void draw();
+protected:
+	void draw_me();
 };

@@ -16,6 +16,7 @@ all:
 		testbuilding.cpp \
 		world.cpp \
 		timer.cpp \
+		base_actor.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr
