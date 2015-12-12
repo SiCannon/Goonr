@@ -112,9 +112,6 @@ int main(int argc, char **argv)
 	tf_world->translate_x = -1.0f; //(-BOARD_WIDTH / 2.0f);
 	tf_world->translate_y = -1.0f; //(-BOARD_HEIGHT / 2.0f);
 
-	//tf_world->translate_x = 1.0f; //(-BOARD_WIDTH / 2.0f);
-	//tf_world->translate_y = 1.0f; //(-BOARD_HEIGHT / 2.0f);
-
 	mouse = new Mouse();
 	mouse->onMouseLeftClick = &mouseLeftClick;
 	mouse->onMouseWheelUp = &mouseWheelUp;
