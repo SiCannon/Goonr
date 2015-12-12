@@ -15,6 +15,7 @@ all:
 		keyboard.cpp \
 		testbuilding.cpp \
 		world.cpp \
+		timer.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr

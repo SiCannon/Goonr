@@ -18,6 +18,7 @@
 #include "gun.h"
 #include "keyboard.h"
 #include "testbuilding.h"
+#include "timer.h"
 
 GLfloat angle = 0.0f;
 
@@ -29,15 +30,12 @@ Highlight *highlight;
 Gun *gun1;
 Gun *gun2;
 TestBuilding *tesbil;
-
-long lastTicks;
-long elapsedTicks;
-void updateGameState();
+Timer *timer;
 
 void display()
 {
 	handleInput(tf_world);
-	updateGameState();
+	timer->tick();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -58,17 +56,10 @@ void display()
 
 	glPopMatrix();
 
-	print_debug_info(mouse, tf_world, elapsedTicks);
+	print_debug_info(mouse, tf_world, timer->elapsedTicks);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
-}
-
-void updateGameState()
-{
-	int newTicks = glutGet(GLUT_ELAPSED_TIME);
-	elapsedTicks = newTicks - lastTicks;
-	lastTicks = newTicks;
 }
 
 void saveMousePosition(int x, int y)
@@ -124,6 +115,7 @@ int main(int argc, char **argv)
 	gun2 = new Gun();
 	gun2->setCell(10, 10);
 	tesbil = new TestBuilding(1.0f, 2.0f, 2.0f);
+	timer = new Timer();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
@@ -144,6 +136,7 @@ int main(int argc, char **argv)
 
 	glutMainLoop();
 
+	delete(timer);
 	delete(tesbil);
 	delete(highlight);
 	delete(mouse);
