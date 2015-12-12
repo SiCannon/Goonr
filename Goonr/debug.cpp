@@ -3,7 +3,8 @@
 
 void print_debug_info(Mouse *mouse, Transform *tf_world, long ticks)
 {
-	printInt(true, rasterLeft, rasterBottom, mouse->x, 128, 128, 0);
+	//printText(true, rasterLeft, rasterBottom, "", 128, 128, 0);
+	//printInt(true, rasterLeft, rasterBottom, mouse->x, 128, 128, 0);
 	/*printText(false, 0, 0, ", ", 128, 128, 0);
 	printInt(false, 0, 0, mouse->y, 128, 128, 0);
 
@@ -15,8 +16,8 @@ void print_debug_info(Mouse *mouse, Transform *tf_world, long ticks)
 
 	printText(false, 0, 0, " :: ", 128, 128, 0);*/
 
-	textResetBottomLeft();
 	textYellow();
+	textResetBottomLeft();
 	textOut("ticks: ");
 	textOutInt(ticks);
 

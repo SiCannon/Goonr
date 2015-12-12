@@ -38,7 +38,7 @@ void textResetBottomLeft()
 
 void textYellow()
 {
-	glColor3ub(0, 0, 0);
+	glColor3ub(192, 192, 0);
 }
 
 void textOut(char const *s)
