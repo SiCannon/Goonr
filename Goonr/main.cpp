@@ -31,6 +31,7 @@ Gun *gun2;
 TestBuilding *tesbil;
 
 long lastTicks;
+long elapsedTicks;
 void updateGameState();
 
 void display()
@@ -57,7 +58,7 @@ void display()
 
 	glPopMatrix();
 
-	print_debug_info(mouse, tf_world);
+	print_debug_info(mouse, tf_world, elapsedTicks);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -66,7 +67,7 @@ void display()
 void updateGameState()
 {
 	int newTicks = glutGet(GLUT_ELAPSED_TIME);
-	int elapsedTicks = newTicks - lastTicks;
+	elapsedTicks = newTicks - lastTicks;
 	lastTicks = newTicks;
 }
 

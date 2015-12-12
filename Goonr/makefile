@@ -14,6 +14,7 @@ all:
 		gun.cpp \
 		keyboard.cpp \
 		testbuilding.cpp \
+		world.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr

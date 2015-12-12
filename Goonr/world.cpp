@@ -1,16 +1,16 @@
 #include "world.h"
 
-void World::World()
+World::World()
 {
 	transform = new Transform();
 }
 
-void World::~World()
+World::~World()
 {
 	delete(transform);
 }
 
-void draw()
+void World::draw()
 {
-	transform->applySF();
+	transform->applyST();
 }

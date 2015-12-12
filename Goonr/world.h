@@ -9,4 +9,4 @@ public:
 	World();
 	~World();
 	void draw();
-}
+};
