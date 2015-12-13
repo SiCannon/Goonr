@@ -5,6 +5,7 @@
 BaseActor::BaseActor()
 {
 	transform = new Transform();
+	transform->scale = 1.0f;
 }
 
 BaseActor::~BaseActor()

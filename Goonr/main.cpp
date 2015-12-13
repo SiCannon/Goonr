@@ -19,6 +19,7 @@
 #include "keyboard.h"
 #include "testbuilding.h"
 #include "timer.h"
+#include "monster.h"
 
 GLfloat angle = 0.0f;
 
@@ -31,6 +32,7 @@ Gun *gun1;
 Gun *gun2;
 TestBuilding *tesbil;
 Timer *timer;
+Monster *monster;
 
 void display()
 {
@@ -52,6 +54,8 @@ void display()
 	gun1->draw();
 	gun2->draw();
 	tesbil->draw();
+	monster->draw();
+
 	cursor->draw();
 
 	glPopMatrix();
@@ -114,6 +118,7 @@ int main(int argc, char **argv)
 	gun2 = new Gun(10, 10);
 	timer = new Timer();
 	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 30.0f);
+	monster = new Monster();
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);

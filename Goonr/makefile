@@ -17,6 +17,7 @@ all:
 		world.cpp \
 		timer.cpp \
 		base_actor.cpp \
+		monster.cpp \
 		-lGL \
 		-lglut \
 		-o ../bin/goonr
