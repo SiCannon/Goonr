@@ -2,8 +2,8 @@
 
 class Timer
 {
-	long lastTicks;
 public:
-	long elapsedTicks;
+	long totalTicks;
+	long intervalTicks;
 	void tick();
 };

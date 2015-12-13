@@ -3,11 +3,16 @@
 #include <GL/freeglut.h>
 #include "transform.h"
 #include "base_actor.h"
+#include "timer.h"
 
 class TestBuilding : public BaseActor
 {
 public:
-	TestBuilding(GLfloat x, GLfloat y, GLfloat scale);
+	TestBuilding(Timer *timer, GLfloat x, GLfloat y, GLfloat scale, GLfloat speed);
 protected:
 	void draw_me();
+private:
+	Timer *timer;
+	GLfloat speed;
+	GLfloat calcAngleInc();
 };

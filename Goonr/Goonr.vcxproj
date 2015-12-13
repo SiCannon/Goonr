@@ -131,6 +131,7 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="base_actor.cpp" />
     <ClCompile Include="board.cpp" />
     <ClCompile Include="CellColors.cpp" />
     <ClCompile Include="cursor.cpp" />
@@ -143,11 +144,13 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClCompile Include="screenutil.cpp" />
     <ClCompile Include="testbuilding.cpp" />
     <ClCompile Include="textutils.cpp" />
+    <ClCompile Include="timer.cpp" />
     <ClCompile Include="transform.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="world.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="base_actor.h" />
     <ClInclude Include="board.h" />
     <ClInclude Include="CellColors.h" />
     <ClInclude Include="cursor.h" />
@@ -160,6 +163,7 @@ copy /y "$(ProjectDir)..\lib\GL\glew32.dll" "$(OutDir)"</Command>
     <ClInclude Include="screenutil.h" />
     <ClInclude Include="testbuilding.h" />
     <ClInclude Include="textutils.h" />
+    <ClInclude Include="timer.h" />
     <ClInclude Include="transform.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="world.h" />

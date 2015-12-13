@@ -1,9 +1,10 @@
 #include "gun.h"
 
-Gun::Gun() : BaseActor()
+Gun::Gun(int x, int y) : BaseActor()
 {
 	transform->scale = 1.0f;
 	transform->rotation = 45.0f;
+	setCell(x, y);
 }
 
 void Gun::draw_me()

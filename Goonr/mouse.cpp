@@ -1,11 +1,14 @@
 #include <GL/freeglut.h>
 #include "mouse.h"
+#include "transform.h"
 
 #define GLUT_WHEEL_UP 3
 #define GLUT_WHEEL_DOWN 4
 
-Mouse::Mouse()
+Mouse::Mouse(Transform *world_transform)
 {
+	this->world_transform = world_transform;
+
 	onMouseLeftClick = nullptr;
 	onMouseWheelUp = nullptr;
 	onMouseWheelDown = nullptr;

@@ -24,18 +24,18 @@ void handleInput(Transform *tf_world)
 {
 	if (keyState['a'])
 	{
-		tf_world->translate_x += translateIncrement;
+		tf_world->translate_x += TRANSLATE_INCREMENT;
 	}
 	if (keyState['d'])
 	{
-		tf_world->translate_x -= translateIncrement;
+		tf_world->translate_x -= TRANSLATE_INCREMENT;
 	}
 	if (keyState['w'])
 	{
-		tf_world->translate_y -= translateIncrement;
+		tf_world->translate_y -= TRANSLATE_INCREMENT;
 	}
 	if (keyState['s'])
 	{
-		tf_world->translate_y += translateIncrement;
+		tf_world->translate_y += TRANSLATE_INCREMENT;
 	}
 }

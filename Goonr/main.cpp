@@ -56,7 +56,7 @@ void display()
 
 	glPopMatrix();
 
-	print_debug_info(mouse, tf_world, timer->elapsedTicks);
+	print_debug_info(mouse, tf_world, timer->intervalTicks);
 
 	glutSwapBuffers();
 	glutPostRedisplay();
@@ -82,14 +82,14 @@ void mouseLeftClick(Mouse *mouse)
 
 void mouseWheelUp(Mouse *mouse)
 {
-	tf_world->scale += scaleIncrement;
+	tf_world->scale += SCALE_INCREMENT;
 }
 
 void mouseWheelDown(Mouse *mouse)
 {
 	if (tf_world->scale > 0.1f)
 	{
-		tf_world->scale -= scaleIncrement;
+		tf_world->scale -= SCALE_INCREMENT;
 	}
 }
 
@@ -99,30 +99,28 @@ int main(int argc, char **argv)
 	board->init(10, 10);
 
 	tf_world = new Transform();
-	tf_world->scale = initialScale;
+	tf_world->scale = INITIAL_SCALE;
 	tf_world->translate_x = -1.0f; //(-BOARD_WIDTH / 2.0f);
 	tf_world->translate_y = -1.0f; //(-BOARD_HEIGHT / 2.0f);
 
-	mouse = new Mouse();
+	mouse = new Mouse(tf_world);
 	mouse->onMouseLeftClick = &mouseLeftClick;
 	mouse->onMouseWheelUp = &mouseWheelUp;
 	mouse->onMouseWheelDown = &mouseWheelDown;
 
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
-	gun1 = new Gun();
-	gun1->setCell(3, 1);
-	gun2 = new Gun();
-	gun2->setCell(10, 10);
-	tesbil = new TestBuilding(1.0f, 2.0f, 2.0f);
+	gun1 = new Gun(3, 1);
+	gun2 = new Gun(10, 10);
 	timer = new Timer();
+	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 30.0f);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
 	glEnable(GL_MULTISAMPLE);
 
 	glutInitWindowPosition(50, 50);
-	glutInitWindowSize(intialWindowWidth, intialWindowHeight);
+	glutInitWindowSize(INTIAL_WNDOW_WIDTH, INITIAL_WINDOW_HEIGHT);
 	glutCreateWindow("Goonr");
 
 	glutDisplayFunc(display);
