@@ -7,7 +7,7 @@
 class Gun : public BaseActor
 {
 public:
-	Gun(int x, int y);
+	Gun(Timer *timer, int x, int y);
 	void setCell(int x, int y);
 protected:
 	void draw_me();

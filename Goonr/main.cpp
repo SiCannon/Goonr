@@ -38,6 +38,8 @@ void display()
 {
 	handleInput(tf_world);
 	timer->tick();
+	
+	monster->update();
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -86,14 +88,16 @@ void mouseLeftClick(Mouse *mouse)
 
 void mouseWheelUp(Mouse *mouse)
 {
-	tf_world->scale += SCALE_INCREMENT;
+	//tf_world->scale += SCALE_INCREMENT;
+	tf_world->scale *= SCALE_MULT;
 }
 
 void mouseWheelDown(Mouse *mouse)
 {
 	if (tf_world->scale > 0.1f)
 	{
-		tf_world->scale -= SCALE_INCREMENT;
+		//tf_world->scale -= SCALE_INCREMENT;
+		tf_world->scale /= SCALE_MULT;
 	}
 }
 
@@ -112,13 +116,13 @@ int main(int argc, char **argv)
 	mouse->onMouseWheelUp = &mouseWheelUp;
 	mouse->onMouseWheelDown = &mouseWheelDown;
 
+	timer = new Timer();
 	cursor = new Cursor(CURSOR_SIZE, mouse);
 	highlight = new Highlight();
-	gun1 = new Gun(3, 1);
-	gun2 = new Gun(10, 10);
-	timer = new Timer();
-	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 30.0f);
-	monster = new Monster();
+	gun1 = new Gun(timer, 3, 1);
+	gun2 = new Gun(timer, 10, 10);
+	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 60.0f);
+	monster = new Monster(timer);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);

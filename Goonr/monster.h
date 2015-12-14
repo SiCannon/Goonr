@@ -5,7 +5,8 @@
 class Monster : public BaseActor
 {
 public:
-	Monster();
+	Monster(Timer *timer);
+	void update();
 protected:
 	void draw_me();
 };

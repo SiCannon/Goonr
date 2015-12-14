@@ -1,9 +1,8 @@
 #include "testbuilding.h"
 #include "timer.h"
 
-TestBuilding::TestBuilding(Timer *timer, GLfloat x, GLfloat y, GLfloat scale, GLfloat speed) : BaseActor()
+TestBuilding::TestBuilding(Timer *timer, GLfloat x, GLfloat y, GLfloat scale, GLfloat speed) : BaseActor(timer)
 {
-	this->timer = timer;
 	transform->translate_x = x;
 	transform->translate_y = y;
 	transform->scale = scale;
@@ -12,7 +11,6 @@ TestBuilding::TestBuilding(Timer *timer, GLfloat x, GLfloat y, GLfloat scale, GL
 
 void TestBuilding::draw_me()
 {
-
 	transform->rotation += calcAngleInc();
 
 	glColor3ub(255, 255, 255);

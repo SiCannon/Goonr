@@ -1,6 +1,6 @@
 #include "gun.h"
 
-Gun::Gun(int x, int y) : BaseActor()
+Gun::Gun(Timer *timer, int x, int y) : BaseActor(timer)
 {
 	transform->scale = 1.0f;
 	transform->rotation = 45.0f;

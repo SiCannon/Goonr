@@ -2,7 +2,7 @@
 #include "base_actor.h"
 #include "monster.h"
 
-Monster::Monster() : BaseActor()
+Monster::Monster(Timer *timer) : BaseActor(timer)
 {
 	
 }
@@ -19,4 +19,9 @@ void Monster::draw_me()
 	glVertex2f(-monster_size / 4.0f, -monster_size / 2.0f);
 	glVertex2f(monster_size / 4.0f, -monster_size / 2.0f);
 	glEnd();
+}
+
+void Monster::update()
+{
+
 }

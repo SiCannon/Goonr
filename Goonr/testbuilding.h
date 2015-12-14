@@ -12,7 +12,6 @@ public:
 protected:
 	void draw_me();
 private:
-	Timer *timer;
 	GLfloat speed;
 	GLfloat calcAngleInc();
 };

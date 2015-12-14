@@ -22,20 +22,21 @@ void getKeyboardUp(unsigned char key, int x, int y)
 
 void handleInput(Transform *tf_world)
 {
+	GLfloat inc = TRANSLATE_INCREMENT / (tf_world->scale / 2.0f);
 	if (keyState['a'])
 	{
-		tf_world->translate_x += TRANSLATE_INCREMENT;
+		tf_world->translate_x += inc;
 	}
 	if (keyState['d'])
 	{
-		tf_world->translate_x -= TRANSLATE_INCREMENT;
+		tf_world->translate_x -= inc;
 	}
 	if (keyState['w'])
 	{
-		tf_world->translate_y -= TRANSLATE_INCREMENT;
+		tf_world->translate_y -= inc;
 	}
 	if (keyState['s'])
 	{
-		tf_world->translate_y += TRANSLATE_INCREMENT;
+		tf_world->translate_y += inc;
 	}
 }
