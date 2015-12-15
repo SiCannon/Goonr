@@ -20,6 +20,7 @@
 #include "testbuilding.h"
 #include "timer.h"
 #include "monster.h"
+#include "planet.h"
 
 GLfloat angle = 0.0f;
 
@@ -33,6 +34,7 @@ Gun *gun2;
 TestBuilding *tesbil;
 Timer *timer;
 Monster *monster;
+Planet *planet;
 
 void display()
 {
@@ -57,6 +59,7 @@ void display()
 	gun2->draw();
 	tesbil->draw();
 	monster->draw();
+	planet->draw();
 
 	cursor->draw();
 
@@ -123,6 +126,7 @@ int main(int argc, char **argv)
 	gun2 = new Gun(timer, 10, 10);
 	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 60.0f);
 	monster = new Monster(timer);
+	planet = new Planet(timer);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);

@@ -1,6 +1,7 @@
 #include <GL/freeglut.h>
 #include "transform.h"
 #include "base_actor.h"
+#include "timer.h"
 
 BaseActor::BaseActor(Timer *timer)
 {
