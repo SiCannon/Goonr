@@ -4,17 +4,21 @@
 
 Planet::Planet(Timer *timer) : BaseActor(timer)
 {
+	angle = 0.0f;
 }
 
-
+/*
 Planet::~Planet()
 {
-}
+}*/
 
-#define SLICES 36
+#define SLICES 24
 
 void Planet::draw_me()
 {
+	//transform->rotation -= 0.5f;
+	transform->scale = fabs(sin((GLfloat)timer->totalTicks / 200.0f) / 10.0f) + 1.0f;
+
 	GLfloat innerRadius = 2.0f;
 	GLfloat outerRadius = 2.1f;
 

@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 	highlight = new Highlight();
 	gun1 = new Gun(timer, 3, 1);
 	gun2 = new Gun(timer, 10, 10);
-	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 60.0f);
+	tesbil = new TestBuilding(timer, 1.0f, 2.0f, 2.0f, 10.0f);
 	monster = new Monster(timer);
 	planet = new Planet(timer);
 
